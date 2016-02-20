@@ -1,2 +1,38 @@
-html,body
-  width 100%
+@lightamount=30
+
+body
+  padding 15px
+
+.react-button-container
+  background yellowgreen
+  text-align center
+.react-button
+  width  18%
+  height 250px
+  border 5px solid gray
+  border-radius 50%
+  display inline-block
+  margin 10px
+  &.pressed
+    border 10px solid gray
+  &:hover
+    opacity 0.5
+  &.red
+    background-color red
+    &.active
+      background-color white
+  &.green
+    background-color green  
+    &.active
+      background-color white  
+
+  &.blue
+    background-color blue  
+    &.active
+      background-color white  
+
+  &.yellow
+    background-color yellow  
+    &.active
+      background-color white  
+  
