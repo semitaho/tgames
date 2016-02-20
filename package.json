@@ -4,6 +4,9 @@
   "description": "HTML5 games with react and pure Javascript",
   "main": "index.js",
   "scripts": {
+    "build:css": "./node_modules/.bin/stylus assets/styles/main.styl -o www/main.css",
+    "watch:css": "./node_modules/.bin/stylus -w  assets/styles/main.styl -o www/main.css",
+
     "test": "test"
   },
   "repository": {
@@ -18,5 +21,11 @@
   "bugs": {
     "url": "https://github.com/semitaho/tgames/issues"
   },
-  "homepage": "https://github.com/semitaho/tgames#readme"
+  "homepage": "https://github.com/semitaho/tgames#readme",
+  "dependencies": {
+    "react": "^0.14.7"
+  },
+  "devDependencies": {
+    "stylus": "^0.53.0"
+  }
 }
