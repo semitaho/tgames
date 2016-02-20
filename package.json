@@ -1,0 +1,22 @@
+{
+  "name": "tgames",
+  "version": "0.0.1",
+  "description": "HTML5 games with react and pure Javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/semitaho/tgames.git"
+  },
+  "keywords": [
+    "reactor"
+  ],
+  "author": "Toni Aho",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/semitaho/tgames/issues"
+  },
+  "homepage": "https://github.com/semitaho/tgames#readme"
+}
