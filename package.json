@@ -6,7 +6,8 @@
   "scripts": {
     "build:css": "./node_modules/.bin/stylus assets/styles/main.styl -o dist/main.css",
     "build:jade": "./node_modules/.bin/jade -P views/partials/*.jade --out dist",
-    "watch": "npm run watch:css & npm run watch:jade & npm run watch:js",
+    "copy:bootstrap": "cp -R ./node_modules/bootstrap dist",
+    "watch": "npm run copy:bootstrap & npm run watch:css & npm run watch:jade & npm run watch:js",
     "watch:js": "./node_modules/.bin/webpack -w -P views/partials/*.jade --out dist",
     "watch:jade": "./node_modules/.bin/jade -w -P views/partials/*.jade --out dist",
     "watch:css": "./node_modules/.bin/stylus -w  assets/styles/main.styl -o dist/main.css",
@@ -26,7 +27,9 @@
   },
   "homepage": "https://github.com/semitaho/tgames#readme",
   "dependencies": {
+    "bootstrap": "^3.3.6",
     "jade": "^1.11.0",
+    "jquery": "^2.2.1",
     "react": "^0.14.7",
     "react-dom": "^0.14.7"
   },
