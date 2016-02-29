@@ -13,7 +13,7 @@ class Timer extends React.Component {
 
 
   componentDidMount(){
-    setInterval(() => {
+    this.interval = setInterval(() => {
       let current = new Date().getTime();
       this.setState({elapsed: this.formatTime(current - this.state.start)});
 
