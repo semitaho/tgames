@@ -2,6 +2,7 @@ import React from 'react';
 import ReactButtonContainer from './buttonContainer.jsx';
 import ReactButton from './button.jsx';
 import Game from './game.jsx';
+import {PLAYING,STARTED} from './../common/gamestate';
 
 import StartButton from './../common/startButton.jsx';
 class ReaktorApp extends React.Component{
@@ -9,7 +10,7 @@ class ReaktorApp extends React.Component{
   constructor(){
     super();
     this.colorArray  = [{type:'red'}, {type:'yellow'}, {type:'blue'}, {type:'green'}];
-    this.state = {rand: -1, resultsqueue: [], counter: 800, clickedqueue: [], playing: false, game: {}};
+    this.state = {rand: -1, resultsqueue: [], counter: 800, clickedqueue: [], gamestate: STARTED};
     this.startGame = this.startGame.bind(this);
   }
 
@@ -31,7 +32,7 @@ class ReaktorApp extends React.Component{
   }
 
   startGame(){
-   this.setState({playing: true, game: {points: 0}}); 
+   this.setState({gamestate: PLAYING,game: {points: 0}}); 
    let counter = 800;
     const myFunction = () => {
       clearInterval(interval);
@@ -56,7 +57,7 @@ class ReaktorApp extends React.Component{
       let clickedqueue = this.state.clickedqueue;
       if (this.checkGameOver(clicked)){
         alert('GAME OVER!');
-        this.setState({ended: true, rand: -1, counter: 10});
+        this.setState({gamestate: 'ended', rand: -1, counter: 10});
       } else {
         clickedqueue.push(clicked);
         let newGame = Object.assign({}, this.state.game, {
@@ -74,13 +75,14 @@ class ReaktorApp extends React.Component{
                   }) }
                 </ReactButtonContainer>
                 <div className="panel-footer reaktor-panel-footer">
-                   {!this.state.playing ? <StartButton onStart={this.startGame} />  : ''}
-                   {this.state.playing ? <Game {...this.state.game} /> : ''}
+                   {this.state.gamestate === STARTED ? <StartButton onStart={this.startGame} />  : ''}
+                   {this.state.gamestate === PLAYING ? <Game gamestate={this.state.gamestate} {...this.state.game} /> : ''}
 
                 </div>
             </div> ) 
   }
 
 }
+
 
 export default ReaktorApp;

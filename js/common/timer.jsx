@@ -1,5 +1,5 @@
 import React from 'react';
-
+import GAMESTATE from './gamestate';
 class Timer extends React.Component {
 
   constructor(){
@@ -22,10 +22,15 @@ class Timer extends React.Component {
 
   }
 
-
   render(){
     return <small>{this.state.elapsed}</small>
   }
+
+  componentDidUpdate(prevProps){
+    console.log('cmp did update', prevProps.gamestate);
+    if (prevProps.gamestate.)
+  }
+
 
 }
 
