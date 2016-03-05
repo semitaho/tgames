@@ -16,7 +16,6 @@ class ReactButton extends React.Component{
 
     const releasePressed = (e) => {
       e.preventDefault();
-      console.log('poi');
       this.setState({pressed: false});
     }
 
@@ -24,17 +23,15 @@ class ReactButton extends React.Component{
     if (this.props.blink){
       clazzName = 'react-button '+this.props.type+' blink';
     }
-    else if (this.props.active){
+    else if (this.state.pressed){
+      clazzName = clazzName + ' pressed';
+    }
+    if (this.props.active){
       clazzName = 'react-button '+this.props.type+' active';
     }
 
-    if (this.state.pressed){
-      clazzName = clazzName + ' pressed';
-
-    }
-
     return <div className="col-md-3 col-sm-3 col-xs-3"> 
-            <div onMouseDown={pressed} onMouseUp={releasePressed} className={clazzName}>
+            <div onMouseDown={this.props.onPress ? pressed: ''} onMouseUp={releasePressed} className={clazzName}>
             </div>
            </div>
   }

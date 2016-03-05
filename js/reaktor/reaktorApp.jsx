@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactButtonContainer from './buttonContainer.jsx';
 import ReactButton from './button.jsx';
-import Game from './game.jsx';
-import {PLAYING,STARTED} from './../common/gamestate';
+import GameInfo from './game.jsx';
+import Util from './../common/util.js';
+import {PLAYING,STARTED, ENDED} from './../common/gamestate';
 
 import StartButton from './../common/startButton.jsx';
 class ReaktorApp extends React.Component{
@@ -10,11 +11,20 @@ class ReaktorApp extends React.Component{
   constructor(){
     super();
     this.colorArray  = [{type:'red'}, {type:'yellow'}, {type:'blue'}, {type:'green'}];
-    this.state = {rand: -1, resultsqueue: [], counter: 800, clickedqueue: [], gamestate: STARTED};
+    this.state = {timer: {elapsed: 0}, rand: -1, resultsqueue: [], counter: 800, clickedqueue: [], gamestate: STARTED};
     this.startGame = this.startGame.bind(this);
   }
 
-  componentDidMount(){
+  startTimer(){
+    let start = new Date().getTime();
+    this.interval = setInterval(() => {
+      let current = new Date().getTime();
+      let newTimer = Object.assign({}, this.state.timer, {
+        elapsed: Util.formatTime(current-start)
+      });
+      this.setState({timer: newTimer});
+
+    },100) 
  
   }
 
@@ -32,6 +42,7 @@ class ReaktorApp extends React.Component{
   }
 
   startGame(){
+   this.startTimer(); 
    this.setState({gamestate: PLAYING,game: {points: 0}}); 
    let counter = 800;
     const myFunction = () => {
@@ -45,19 +56,52 @@ class ReaktorApp extends React.Component{
       resultsqueue.push(currentRand); 
       this.setState({rand: currentRand, resultsqueue})
       counter = counter;
-      if (!this.state.ended){
+      if (this.state.gamestate === PLAYING){
         interval = setInterval(myFunction, this.state.counter);
       }
     };
     var interval = setTimeout(myFunction, this.state.counter);
   }
 
+  endGame(){
+    clearInterval(this.interval);
+    this.setState({gamestate: 'ended', rand: -1});
+  }
+
   render(){
+    console.log('state', this.state.gamestate);
+    switch(this.state.gamestate){
+      case STARTED:
+        return this.renderStart();
+      case PLAYING:
+        return this.renderPlaying();
+      case ENDED:
+        return this.renderEnded();
+      default:
+        return this.renderStart();
+    }
+  }
+
+  renderStart(){
+    return (<div className="panel panel-default reaktor-panel">
+      <ReactButtonContainer>
+      {this.colorArray.map ((color,index) => {
+        let key = index;
+        return (<ReactButton type={color.type}  key={key} />)
+        })}
+      </ReactButtonContainer>
+      <div className="panel-footer reaktor-panel-footer">
+        <StartButton onStart={this.startGame} /> 
+      </div>
+    </div> ) 
+
+  }
+
+  renderPlaying(){
     const onPress = (clicked) => {
       let clickedqueue = this.state.clickedqueue;
       if (this.checkGameOver(clicked)){
-        alert('GAME OVER!');
-        this.setState({gamestate: 'ended', rand: -1, counter: 10});
+        this.endGame();
       } else {
         clickedqueue.push(clicked);
         let newGame = Object.assign({}, this.state.game, {
@@ -66,20 +110,34 @@ class ReaktorApp extends React.Component{
         this.setState({game: newGame, counter: this.state.counter-10});
       }
     };
-    return(<div className="panel panel-default reaktor-panel">
-                    
-                <ReactButtonContainer>
-                    {this.colorArray.map ((color,index) => {
-                      let key = index;
-                      return (<ReactButton blink={this.state.ended}  type={color.type}  key={key} onPress={() => onPress(key)} active={index === this.state.rand} />) 
-                  }) }
-                </ReactButtonContainer>
-                <div className="panel-footer reaktor-panel-footer">
-                   {this.state.gamestate === STARTED ? <StartButton onStart={this.startGame} />  : ''}
-                   {this.state.gamestate === PLAYING ? <Game gamestate={this.state.gamestate} {...this.state.game} /> : ''}
+    return(
+      <div className="panel panel-default reaktor-panel">
+        <ReactButtonContainer>
+          {this.colorArray.map ((color,index) => {
+            let key = index;
+            return (<ReactButton type={color.type}  key={key} onPress={() => onPress(key)} active={index === this.state.rand} />) 
+          }) }
+        </ReactButtonContainer>
+        <div className="panel-footer reaktor-panel-footer">
+          <GameInfo timer={this.state.timer} gamestate={PLAYING} {...this.state.game} /> : ''}
+        </div>
+      </div> ) 
+  }
+  renderEnded(){
+     return(<div className="panel panel-default reaktor-panel">
+        <ReactButtonContainer>
+          {this.colorArray.map ((color,index) => {
+            let key = index;
+            return (
+              <ReactButton blink={true}  type={color.type}  key={key} />) 
+          }) }
+        </ReactButtonContainer>
+        <div className="panel-footer reaktor-panel-footer">
+          <StartButton onStart={this.startGame} />
+          <GameInfo timer={this.state.timer} gamestate={ENDED} {...this.state.game} /> : ''}
+        </div>
+      </div> ) 
 
-                </div>
-            </div> ) 
   }
 
 }
