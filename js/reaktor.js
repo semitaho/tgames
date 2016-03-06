@@ -1,3 +1,11 @@
+if (window.location.protocol !== "https:" && window.location.hostname.indexOf('semitaho.github.io') > -1){
+    window.location.href = "https:" + window.location.href.substring(window.location.protocol.length); 
+}
+
+
+
+
+
 import {render} from 'react-dom';
 import React from 'react';
 import App from './reaktor/reaktorApp.jsx';
