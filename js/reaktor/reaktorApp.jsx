@@ -70,7 +70,7 @@ class ReaktorApp extends React.Component{
   }
 
   render(){
-    console.log('state', this.state.gamestate);
+    console.log('state', this.props);
     switch(this.state.gamestate){
       case STARTED:
         return this.renderStart();
@@ -135,7 +135,7 @@ class ReaktorApp extends React.Component{
       <div>
         {this.state.modalshow === true ? 
         <Modal title="Reaktor" onSave={onSave}>
-          <p>You scored: <strong>{this.state.game.points}</strong></p>
+          <p>{this.props.name}, you scored: <strong>{this.state.game.points}</strong></p>
         </Modal> : ''}
 
       <div className="panel panel-default reaktor-panel">

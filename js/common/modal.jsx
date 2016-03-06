@@ -5,7 +5,7 @@ import $ from 'jquery';
 
 class Modal extends React.Component{
   render (){
-    return (<div id="tmodal" className="modal fade" tabIndex="-1" role="dialog">
+    return (<div id="tmodal" className="modal modal-lg" tabIndex="-1" role="dialog">
               <div className="modal-dialog">
                 <div className="modal-content">
                   <div className="modal-header">
