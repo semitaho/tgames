@@ -29,25 +29,8 @@ window.fbAsyncInit = function() {
       }
     });
   }
+  render(<App  />, tircContent);
 
-
-  FB.getLoginStatus(function(response) {
-    if (response.status === 'connected') {
-       FB.api('/me', function(response) {
-       console.log('Good to see you, ' + response.name + '.');
-       render(<App {...response} />, tircContent);
-     });
-      var uid = response.authResponse.userID;
-      var accessToken = response.authResponse.accessToken;
-    } else if (response.status === 'not_authorized') {
-      console.log('not not_authorized');
-      login();
-      // the user is logged in to Facebook, 
-      // but has not authenticated your app
-    } else {
-      console.log('not in facebook');
-    }
-  });
 };
 
   (function(d, s, id){

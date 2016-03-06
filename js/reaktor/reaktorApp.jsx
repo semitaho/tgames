@@ -4,7 +4,8 @@ import ReactButton from './button.jsx';
 import GameInfo from './game.jsx';
 import Util from './../common/util.js';
 import Modal from './../common/modal.jsx';
-import {PLAYING,STARTED, ENDED} from './../common/gamestate';
+import LoginModal from './../common/loginmodal.jsx';
+import {PLAYING,STARTED, ENDED,NOT_LOGGED} from './../common/gamestate';
 
 import StartButton from './../common/startButton.jsx';
 class ReaktorApp extends React.Component{
@@ -12,8 +13,9 @@ class ReaktorApp extends React.Component{
   constructor(){
     super();
     this.colorArray  = [{type:'red'}, {type:'yellow'}, {type:'blue'}, {type:'green'}];
-    this.state = {modalshow:false, timer: {elapsed: 0},  gamestate: STARTED};
+    this.state = {modalshow:false, timer: {elapsed: 0},  gamestate: ''};
     this.startGame = this.startGame.bind(this);
+    this.checkLoginStatus = this.checkLoginStatus.bind(this);
   }
 
   startTimer(){
@@ -27,6 +29,28 @@ class ReaktorApp extends React.Component{
 
     },100) 
  
+  }
+  componentDidMount(){
+    FB.getLoginStatus(this.checkLoginStatus)
+  }
+
+  checkLoginStatus(response){
+    if (response.status === 'connected') {
+       FB.api('/me', response => {
+       console.log('Good to see you, ' + response.name + '.');
+       this.setState({response,  gamestate: STARTED})
+     });
+      var uid = response.authResponse.userID;
+      var accessToken = response.authResponse.accessToken;
+    } else if (response.status === 'not_authorized') {
+      console.log('not not_authorized');
+      this.setState({gamestate: NOT_LOGGED});
+      // the user is logged in to Facebook, 
+      // but has not authenticated your app
+    } else {
+      console.log('not in facebook');
+      this.setState({gamestate: NOT_LOGGED});
+    }
   }
 
   checkGameOver(offered){
@@ -72,6 +96,8 @@ class ReaktorApp extends React.Component{
   render(){
     console.log('state', this.props);
     switch(this.state.gamestate){
+      case NOT_LOGGED:
+        return this.renderNotLogged();
       case STARTED:
         return this.renderStart();
       case PLAYING:
@@ -79,8 +105,26 @@ class ReaktorApp extends React.Component{
       case ENDED:
         return this.renderEnded();
       default:
-        return this.renderStart();
+        return this.renderEmpty();
     }
+  }
+
+  renderNotLogged(){
+
+    return(
+        <LoginModal onClick={() => {
+            FB.login(response => {
+              if (response.status === 'connected') {
+                location.reload(true);
+              }
+            });
+          }} /> 
+    )
+
+  }
+
+  renderEmpty(){
+    return <div />
   }
 
   renderStart(){

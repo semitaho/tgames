@@ -1,7 +1,5 @@
 import React from 'react';
 
-
-
 const startButton = (props) => {
   return (
       <div className="start text-center">

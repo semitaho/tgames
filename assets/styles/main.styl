@@ -1,6 +1,19 @@
 @import 'animation.styl'
 
 
+
+@media only screen and (orientation:portrait){
+  #reaktor-container {  
+    //height 100vw
+    //transform rotate(90deg)
+  }
+}
+@media only screen and (orientation:landscape){
+  #reaktor-container {  
+     //transform rotate(0deg)
+  }
+}
+
 @lightamount=30
 html, body, #reaktor-container, .reaktor-panel
   height 100%
