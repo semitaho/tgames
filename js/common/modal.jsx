@@ -30,7 +30,6 @@ class Modal extends React.Component{
   }
 
   componentWillUnmount(){
-    console.log('pyllerön kakka');
     this.toggleModal('hide');
   }
 

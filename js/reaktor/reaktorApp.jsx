@@ -171,6 +171,14 @@ class ReaktorApp extends React.Component{
   renderEnded(){
     const onSave = () => {
       console.log('on save..');
+      if (localStorage){
+        let currentScore = this.state.game.points;
+        if (localStorage &&  (!localStorage.topscore ||  currentScore > Number(localStorage.topscore))){
+          console.log('keijo kurttila');
+          localStorage.setItem('topscore',currentScore);
+
+        }
+      }
       this.setState({modalshow:false});
     };
 
@@ -179,7 +187,9 @@ class ReaktorApp extends React.Component{
       <div>
         {this.state.modalshow === true ? 
         <Modal title="Reaktor" onSave={onSave}>
-          <p>{this.props.name}, you scored: <strong>{this.state.game.points}</strong></p>
+          
+          <p>{this.state.response.name}, you scored: <strong>{this.state.game.points}</strong></p>
+           {localStorage.topscore ?  <small>Your current top score: <strong>{localStorage.topscore}</strong></small>: ''}
         </Modal> : ''}
 
       <div className="panel panel-default reaktor-panel">
