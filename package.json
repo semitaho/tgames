@@ -6,12 +6,15 @@
   "scripts": {
     "build:css": "./node_modules/.bin/stylus assets/styles/main.styl -o dist/main.css",
     "build:jade": "./node_modules/.bin/jade -P views/partials/*.jade --out dist",
+    "build:js": "./node_modules/.bin/webpack -p",
+    "copy": "cp manifest.json dist",
     "copy:bootstrap": "cp -R ./node_modules/bootstrap dist",
     "watch": "npm run copy:bootstrap & npm run watch:css & npm run watch:jade & npm run watch:js",
-    "watch:js": "./node_modules/.bin/webpack -w -P views/partials/*.jade --out dist",
+    "watch:js": "./node_modules/.bin/webpack -w -p ",
     "watch:jade": "./node_modules/.bin/jade -w -P views/partials/*.jade --out dist",
     "watch:css": "./node_modules/.bin/stylus -w  assets/styles/main.styl -o dist/main.css",
-    "test": "test"
+    "test": "test",
+    "dist" : "npm run build:jade && npm run copy && npm run build:css &&  npm run build:js"
   },
   "repository": {
     "type": "git",

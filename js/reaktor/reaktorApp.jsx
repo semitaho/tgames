@@ -3,6 +3,7 @@ import ReactButtonContainer from './buttonContainer.jsx';
 import ReactButton from './button.jsx';
 import GameInfo from './game.jsx';
 import Util from './../common/util.js';
+import Modal from './../common/modal.jsx';
 import {PLAYING,STARTED, ENDED} from './../common/gamestate';
 
 import StartButton from './../common/startButton.jsx';
@@ -11,7 +12,7 @@ class ReaktorApp extends React.Component{
   constructor(){
     super();
     this.colorArray  = [{type:'red'}, {type:'yellow'}, {type:'blue'}, {type:'green'}];
-    this.state = {timer: {elapsed: 0}, rand: -1, resultsqueue: [], counter: 800, clickedqueue: [], gamestate: STARTED};
+    this.state = {modalshow:false, timer: {elapsed: 0},  gamestate: STARTED};
     this.startGame = this.startGame.bind(this);
   }
 
@@ -43,7 +44,7 @@ class ReaktorApp extends React.Component{
 
   startGame(){
    this.startTimer(); 
-   this.setState({gamestate: PLAYING,game: {points: 0}}); 
+   this.setState({gamestate: PLAYING,game: {points: 0}, resultsqueue: [], rand: -1,clickedqueue: [], counter: 800}); 
    let counter = 800;
     const myFunction = () => {
       clearInterval(interval);
@@ -65,7 +66,7 @@ class ReaktorApp extends React.Component{
 
   endGame(){
     clearInterval(this.interval);
-    this.setState({gamestate: 'ended', rand: -1});
+    this.setState({gamestate: 'ended', modalshow: true, rand: -1});
   }
 
   render(){
@@ -119,12 +120,25 @@ class ReaktorApp extends React.Component{
           }) }
         </ReactButtonContainer>
         <div className="panel-footer reaktor-panel-footer">
-          <GameInfo timer={this.state.timer} gamestate={PLAYING} {...this.state.game} /> : ''}
+          <GameInfo timer={this.state.timer} gamestate={PLAYING} {...this.state.game} />
         </div>
       </div> ) 
   }
   renderEnded(){
-     return(<div className="panel panel-default reaktor-panel">
+    const onSave = () => {
+      console.log('on save..');
+      this.setState({modalshow:false});
+    };
+
+
+    return(
+      <div>
+        {this.state.modalshow === true ? 
+        <Modal title="Reaktor" onSave={onSave}>
+          <p>You scored: <strong>{this.state.game.points}</strong></p>
+        </Modal> : ''}
+
+      <div className="panel panel-default reaktor-panel">
         <ReactButtonContainer>
           {this.colorArray.map ((color,index) => {
             let key = index;
@@ -134,9 +148,8 @@ class ReaktorApp extends React.Component{
         </ReactButtonContainer>
         <div className="panel-footer reaktor-panel-footer">
           <StartButton onStart={this.startGame} />
-          <GameInfo timer={this.state.timer} gamestate={ENDED} {...this.state.game} /> : ''}
         </div>
-      </div> ) 
+      </div></div> ) 
 
   }
 

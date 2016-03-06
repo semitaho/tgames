@@ -31,7 +31,7 @@ class ReactButton extends React.Component{
     }
 
     return <div className="col-md-3 col-sm-3 col-xs-3"> 
-            <div onMouseDown={this.props.onPress ? pressed: ''} onMouseUp={releasePressed} className={clazzName}>
+            <div onMouseDown={this.props.onPress ? pressed: ''}  onTouchStart={this.props.onPress ? pressed: ''} onTouchEnd={releasePressed} onMouseUp={releasePressed} className={clazzName}>
             </div>
            </div>
   }
