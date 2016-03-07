@@ -14,7 +14,7 @@
     "watch:jade": "./node_modules/.bin/jade -w -P views/partials/*.jade --out dist",
     "watch:css": "./node_modules/.bin/stylus -w  assets/styles/main.styl -o dist/main.css",
     "test": "test",
-    "dist" : "npm run build:jade && npm run copy && npm run build:css &&  npm run build:js"
+    "dist": "npm run build:jade && npm run copy && npm run build:css &&  npm run build:js"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,8 @@
     "jade": "^1.11.0",
     "jquery": "^2.2.1",
     "react": "^0.14.7",
-    "react-dom": "^0.14.7"
+    "react-dom": "^0.14.7",
+    "react-router": "^2.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.5.2",

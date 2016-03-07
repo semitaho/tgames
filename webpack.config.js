@@ -12,13 +12,13 @@ module.exports = {
       loader: "babel-loader"
     }]
   },
-  entry: "./js/reaktor.js",
-  devtool: "source-map",
+  entry: "./js/tgames.js",
+  devtool: "eval",
   output: {
     path: "./dist",
-    filename: "reaktor.min.js"
+    filename: "tgames.min.js"
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({minimize: true, compress:{warnings: false}})
+  //new webpack.optimize.UglifyJsPlugin({minimize: false, compress:{warnings: false}})
   ]
 };
