@@ -19,18 +19,19 @@ class Home extends React.Component {
         <div className="row">
           {this.state.games.map(game => {
             let divStyle = {backgroundImage: 'url('+game.background+')'};
+            let clazz ='btn btn-lg btn-block '+game.class;
             return (
-              <div className="col-md-6 gamebox" style={divStyle}>
-                <h3><Link to={game.link}>{game.name}</Link></h3>
+              <div className="col-md-12 gamebox">
+                <Link className={clazz} to={game.link}><h2>{game.name}</h2></Link>
               </div>)
-          })};
+          })}
         </div>
 
       </div>
     )
   }
 
-  componentDidMount() {
+  componentWillMount() {
     backend.readGames().then(this.processGames);
   }
 

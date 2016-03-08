@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Router, Route, IndexRoute, Link, hashHistory } from 'react-router'
 import Home from './home/home.jsx';
 import Reaktor from './reaktor/reaktorApp.jsx';
-
+import gapi from 'gapi';
 global.jQuery = require('jquery');
 require('bootstrap');
 
@@ -17,6 +17,11 @@ const App = React.createClass({
         {this.props.children}
       </div>
     )
+  },
+
+  componentDidMount(){
+    console.log('aijaa');
+
   }
 });
 window.fbAsyncInit = function () {

@@ -12,7 +12,10 @@ class LoginModal extends React.Component{
                     <h4>Et ole kirjautunut sisään</h4>
                    </div> 
                    <div className="modal-footer">
-                      <button onClick={this.props.onClick} className="btn btn-primary pull-right">Kirjaudu Facebookin kautta</button>
+                       <div className="btn-group pull-right"> 
+                        <div className="g-signin2" data-onsuccess="onSignIn" data-theme="dark" />
+                        <button onClick={this.props.onClick} className="btn btn-primary pull-right">Kirjaudu Facebookin kautta</button>
+                    </div>
                   </div>
                 </div>
               </div>
