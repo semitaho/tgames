@@ -12,9 +12,9 @@ class LoginModal extends React.Component{
                     <h4>Et ole kirjautunut sisään</h4>
                    </div> 
                    <div className="modal-footer">
-                       <div className="btn-group pull-right"> 
-                        <div className="g-signin2" data-onsuccess="onSignIn" data-theme="dark" />
-                        <button onClick={this.props.onClick} className="btn btn-primary pull-right">Kirjaudu Facebookin kautta</button>
+                       <div className="btn-group pull-right col-md-12"> 
+                        <div className="g-signin2" id="google-login" />
+                        <div id="fb-login" className="fb-login-button" onlogin={this.props.onClick} data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="false"></div>
                     </div>
                   </div>
                 </div>
@@ -25,6 +25,16 @@ class LoginModal extends React.Component{
   componentDidMount(){
     console.log('facebookmodal - did mount');
     this.toggleModal('show');
+    FB.XFBML.parse(document.getElementById('fb-login'));
+    console.log('keeeijo');
+    console.log('gapi', gapi.signin2);
+    gapi.signin2.render('google-login', {
+        'scope': 'profile email',
+        'longtitle': false,
+        'theme': 'dark',
+        'onsuccess': this.props.onGoogleSignedIn
+      });
+
   }
 
   componentWillUnmount(){

@@ -3,27 +3,81 @@ import { render } from 'react-dom';
 import { Router, Route, IndexRoute, Link, hashHistory } from 'react-router'
 import Home from './home/home.jsx';
 import Reaktor from './reaktor/reaktorApp.jsx';
-import gapi from 'gapi';
+import auth from './common/auth.js';
+import $ from 'jquery';
+const GAPI_KEY = 'AIzaSyBLLdbasHWY-YsG5o5F3cmm9dg8poGYm8M';
+import {NOT_LOGGED} from './common/gamestate.js';
+import LoginModal from './common/loginmodal.jsx';
 global.jQuery = require('jquery');
 require('bootstrap');
 
-const App = React.createClass({
+class App extends React.Component {
+
+  constructor(){
+    super();
+    console.log('heihei');
+    this.handleAuthResult = this.handleAuthResult.bind(this);
+    this.state = {gamestate:null};
+  }
+
+
+  onGoogleSignedIn(response){
+    console.log('response', response.getBasicProfile());
+  }
+
+
+
   render() {
     return (
 
       <div>
         <div className="fb-like" data-share="true" data-width="450" data-show-faces="true"/>
+        {this.state.gamestate && this.state.gamestate === NOT_LOGGED ?  <LoginModal  onGoogleSignedIn={this.onGoogleSignedIn}  onClick={() => {
+            FB.login(response => {
+              if (response.status === 'connected') {
+                location.reload(true);
+              }
+            });
+          }} /> : '' }
 
         {this.props.children}
       </div>
     )
-  },
+  }
 
-  componentDidMount(){
-    console.log('aijaa');
+  checkAuth(){
+    auth.loginGoogle(true).then(this.handleAuthResult);
 
   }
-});
+
+  handleAuthResult(response){
+    console.log('keekki');
+    if (response && !response.error) {
+      console.log('no error', gapi.client);
+       gapi.client.load('plus', 'v1', () =>  {
+        
+         var request = gapi.client.plus.people.get({
+          'userId': 'me'
+         });
+
+        request.execute(resp => {
+            console.log('Retrieved profile for:', resp);
+        }, error => {
+          console.log('error', error);
+        });
+       });
+    } else {
+      console.log('auth failes....', response);
+      this.setState({gamestate: NOT_LOGGED});
+    }
+
+  }
+
+  componentDidMount(){
+    gapi.client.setApiKey(GAPI_KEY);
+    this.checkAuth();
+  }
+};
 window.fbAsyncInit = function () {
 
   var appId;
