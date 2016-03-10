@@ -10,74 +10,72 @@ import {NOT_LOGGED} from './common/gamestate.js';
 import LoginModal from './common/loginmodal.jsx';
 global.jQuery = require('jquery');
 require('bootstrap');
+const CLIENT_ID = '620105354552-026kvdqfb4gbja57l1d2l71hgdta92gl.apps.googleusercontent.com';
 
 class App extends React.Component {
 
-  constructor(){
+  constructor() {
     super();
-    console.log('heihei');
     this.handleAuthResult = this.handleAuthResult.bind(this);
-    this.state = {gamestate:null};
+    this.state = {gamestate: null};
   }
 
-
-  onGoogleSignedIn(response){
-    console.log('response', response.getBasicProfile());
+  onGoogleSignedIn(response) {
+    location.reload(true);
   }
-
-
 
   render() {
     return (
 
       <div>
-        <div className="fb-like" data-share="true" data-width="450" data-show-faces="true"/>
-        {this.state.gamestate && this.state.gamestate === NOT_LOGGED ?  <LoginModal  onGoogleSignedIn={this.onGoogleSignedIn}  onClick={() => {
+        {this.state.gamestate && this.state.gamestate === NOT_LOGGED ? <LoginModal onGoogleSignedIn={this.onGoogleSignedIn} onClick={() => {
             FB.login(response => {
               if (response.status === 'connected') {
                 location.reload(true);
-              }
+             }
             });
-          }} /> : '' }
+          }}/> : '' }
 
         {this.props.children}
       </div>
     )
   }
 
-  checkAuth(){
+  checkAuth() {
     auth.loginGoogle(true).then(this.handleAuthResult);
 
   }
 
-  handleAuthResult(response){
-    console.log('keekki');
+  handleAuthResult(response) {
+    console.log('keekki', gapi);
     if (response && !response.error) {
       console.log('no error', gapi.client);
-       gapi.client.load('plus', 'v1', () =>  {
-        
-         var request = gapi.client.plus.people.get({
-          'userId': 'me'
-         });
-
-        request.execute(resp => {
-            console.log('Retrieved profile for:', resp);
-        }, error => {
-          console.log('error', error);
-        });
-       });
     } else {
       console.log('auth failes....', response);
-      this.setState({gamestate: NOT_LOGGED});
     }
 
   }
 
-  componentDidMount(){
-    gapi.client.setApiKey(GAPI_KEY);
-    this.checkAuth();
+  componentDidMount() {
+    gapi.load('auth2', () => {
+      let auth2 = gapi.auth2.init({
+        client_id: CLIENT_ID
+      });
+      auth2.then(() => {
+        console.log('heihei');
+        if (auth2.isSignedIn.get() === false) {
+          console.log('et oo sisäs');
+          this.setState({gamestate: NOT_LOGGED});
+          return;
+        } else {
+          console.log('jepjep');
+        }
+      });
+
+    });
+    ;
   }
-};
+}
 window.fbAsyncInit = function () {
 
   var appId;
