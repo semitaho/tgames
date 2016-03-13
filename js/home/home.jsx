@@ -13,7 +13,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className="container-fluid">
+      <div>
         <h1>Choose the game</h1>
 
         <div className="row">

@@ -13,7 +13,7 @@ class ReaktorApp extends React.Component{
   constructor(){
     super();
     this.colorArray  = [{type:'red'}, {type:'yellow'}, {type:'blue'}, {type:'green'}];
-    this.state = {modalshow:false, timer: {elapsed: 0},  gamestate: ''};
+    this.state = {modalshow:false, timer: {elapsed: 0},  gamestate: STARTED};
     this.startGame = this.startGame.bind(this);
     this.checkLoginStatus = this.checkLoginStatus.bind(this);
   }
@@ -95,8 +95,6 @@ class ReaktorApp extends React.Component{
   render(){
     console.log('state', this.props);
     switch(this.state.gamestate){
-      case NOT_LOGGED:
-        return this.renderNotLogged();
       case STARTED:
         return this.renderStart();
       case PLAYING:
@@ -108,19 +106,6 @@ class ReaktorApp extends React.Component{
     }
   }
 
-  renderNotLogged(){
-
-    return(
-        <LoginModal onClick={() => {
-            FB.login(response => {
-              if (response.status === 'connected') {
-                location.reload(true);
-              }
-            });
-          }} /> 
-    )
-
-  }
 
   renderEmpty(){
     return <div />
@@ -169,7 +154,6 @@ class ReaktorApp extends React.Component{
   }
   renderEnded(){
     const onSave = () => {
-      console.log('on save..');
       if (localStorage){
         let currentScore = this.state.game.points;
         if (localStorage &&  (!localStorage.topscore ||  currentScore > Number(localStorage.topscore))){
@@ -187,7 +171,7 @@ class ReaktorApp extends React.Component{
         {this.state.modalshow === true ? 
         <Modal title="Reaktor" onSave={onSave}>
           
-          <p>{this.state.response.name}, you scored: <strong>{this.state.game.points}</strong></p>
+          <p>{this.props.userinfo.name}, you scored: <strong>{this.state.game.points}</strong></p>
            {localStorage.topscore ?  <small>Your current top score: <strong>{localStorage.topscore}</strong></small>: ''}
         </Modal> : ''}
 

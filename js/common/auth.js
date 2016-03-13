@@ -6,20 +6,57 @@ const PROVIDER_FACEBOOK = 'facebook';
 
 class Auth {
 
-  static checkAuthGoogle() {
+  static loadAuth2(){
     return new Promise((resolve) => {
       gapi.load('auth2', () => {
         let auth2 = gapi.auth2.init({
           client_id: CLIENT_ID
         });
         auth2.then(() => {
-          if (auth2.isSignedIn && auth2.isSignedIn.get() === true) {
+          resolve(true);
+        }, (error) => {
+          console.log('error',error);
+        });
+      
+      });
+    }); 
+  }
+
+  static checkAuth(provider){
+    return new Promise((resolve,reject) => {
+      switch(provider){
+        case PROVIDER_GOOGLE:
+          this.checkAuthGoogle().then(() => {
             resolve({provider: PROVIDER_GOOGLE});
+          });
+          break;
+        case PROVIDER_FACEBOOK:
+          this.checkAuthFacebook().then(() => {
+            resolve({provider: PROVIDER_FACEBOOK});
+          });
+          break;  
+
+        default:
+         reject('no provider provided');
+      }
+      if (!provider){
+        reject('no provider provided');
+      }
+    });
+
+  }
+
+  static checkAuthGoogle() {
+    return new Promise((resolve, reject) => {
+        this.loadAuth2().then(() => {
+          console.log('chekkonen');
+          let auth2 = gapi.auth2.getAuthInstance();
+          if (auth2.isSignedIn && auth2.isSignedIn.get() === true) {
+            resolve(true);
           } else {
-            resolve(false);
+            reject(false);
           }
         });
-      });
     });
   }
 
@@ -27,12 +64,12 @@ class Auth {
     return new Promise(resolve => {
       FB.getLoginStatus((response) => {
         if (response.status === 'connected') {
-          resolve({provider: PROVIDER_FACEBOOK});
+          resolve(true);
         } else if (response.status === 'not_authorized') {
           console.log('not authorized');
-          resolve(false);
+          reject(false);
         } else {
-          resolve(false);
+          reject(false);
         }
       });
     });
@@ -47,12 +84,20 @@ class Auth {
 
   static readUserInfo(provider) {
     return new Promise((resolve, reject)=> {
-      switch (provider) {
+      switch (provider.provider) {
         case PROVIDER_GOOGLE:
+          let auth2 = gapi.auth2.getAuthInstance();
+          let profile = auth2.currentUser.get().getBasicProfile();
+          let userObject = {userid: profile.getId(), name: profile.getName(), imageurl: profile.getImageUrl(), provider: PROVIDER_GOOGLE};
+          resolve(userObject);
           break;
         case PROVIDER_FACEBOOK:
-          FB.api('/me', (response) => {
-            console.log('me', response);
+          FB.api('/me?fields=id,name,picture', (response) => {
+            let userObject = {userid: response.id, name: response.name, provider: PROVIDER_FACEBOOK};
+            if (response.picture && response.picture.data){
+              userObject.imageurl = response.picture.data.url;
+            }
+            resolve(userObject);
           });
           break;
         default:

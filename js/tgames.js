@@ -6,7 +6,7 @@ import Reaktor from './reaktor/reaktorApp.jsx';
 import auth from './common/auth.js';
 import $ from 'jquery';
 const GAPI_KEY = 'AIzaSyBLLdbasHWY-YsG5o5F3cmm9dg8poGYm8M';
-import {NOT_LOGGED} from './common/gamestate.js';
+import {NOT_LOGGED, STARTED} from './common/gamestate.js';
 import LoginModal from './common/loginmodal.jsx';
 global.jQuery = require('jquery');
 require('bootstrap');
@@ -17,7 +17,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.handleAuthResult = this.handleAuthResult.bind(this);
-    this.state = {gamestate: null};
+    this.state = {gamestate: null, userinfo: {}};
   }
 
   onGoogleSignedIn(response) {
@@ -37,18 +37,21 @@ class App extends React.Component {
   render() {
     return (
 
-      <div>
+      <div className="container-fluid">
+        <header className="pull-right">
+          <img title={this.state.userinfo.name} className="img-thumbnail img-circle" src={this.state.userinfo.imageurl} />
+        </header>
         {this.state.gamestate && this.state.gamestate === NOT_LOGGED ? <LoginModal onGoogleSignedIn={this.onGoogleSignedIn} onClick={() => {
             FB.login(this.onFacebookSignedIn);
           }}/> : '' }
 
-        {this.state.gamestate && this.state.gamestate !== NOT_LOGGED ? this.props.children : ''}
+        {this.state.gamestate && this.state.gamestate !== NOT_LOGGED ? 
+          React.cloneElement(this.props.children, {userinfo: this.state.userinfo}) : ''}
       </div>
     )
   }
 
   handleAuthResult(response) {
-    console.log('keekki', gapi);
     if (response && !response.error) {
       console.log('no error', gapi.client);
     } else {
@@ -77,12 +80,21 @@ class App extends React.Component {
      });
      */
 
+     auth.checkAuth(localStorage.provider)
+     .then(auth.readUserInfo, (error) => {
+
+      console.log('has error', error)
+      this.setState({gamestate: NOT_LOGGED});
+     }).then(response => {
+      this.setState({gamestate: STARTED, userinfo: response})
+     });
+
+    /*
     Promise.all([auth.checkAuthGoogle(), auth.checkAuthFacebook()]).then(dataArray => {
       console.log('promises', dataArray);
       let hasTrue = dataArray.find(item => item !== false);
       if (!hasTrue) {
         console.log('has not signed in...');
-        this.setState({gamestate: NOT_LOGGED});
       } else {
         console.log('HAS signed in, provider: ' + localStorage.provider);
         auth.readUserInfo(localStorage.provider).then(info => {
@@ -90,6 +102,7 @@ class App extends React.Component {
         });
       }
     });
+*/
 
   }
 }
