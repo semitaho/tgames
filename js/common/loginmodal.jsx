@@ -26,7 +26,6 @@ class LoginModal extends React.Component{
     console.log('facebookmodal - did mount');
     this.toggleModal('show');
     FB.XFBML.parse(document.getElementById('fb-login'));
-    console.log('keeeijo');
     console.log('gapi', gapi.signin2);
     gapi.signin2.render('google-login', {
         'scope': 'profile email',

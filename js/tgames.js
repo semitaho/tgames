@@ -41,11 +41,6 @@ class App extends React.Component {
     )
   }
 
-  checkAuth() {
-    auth.loginGoogle(true).then(this.handleAuthResult);
-
-  }
-
   handleAuthResult(response) {
     console.log('keekki', gapi);
     if (response && !response.error) {
@@ -57,23 +52,34 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    gapi.load('auth2', () => {
-      let auth2 = gapi.auth2.init({
-        client_id: CLIENT_ID
-      });
-      auth2.then(() => {
-        console.log('heihei');
-        if (auth2.isSignedIn.get() === false) {
-          console.log('et oo sisäs');
-          this.setState({gamestate: NOT_LOGGED});
-          return;
-        } else {
-          console.log('jepjep');
-        }
-      });
 
+    /*
+     auth.checkAuthGoogle().then(isLoggedIn => {
+     console.log('heihei');
+     if (isLoggedIn === false) {
+     console.log('et oo sisäs');
+     this.setState({gamestate: NOT_LOGGED});
+     return;
+     } else {
+     console.log('jepjep');
+     }
+     });
+
+
+     auth.checkAuthFacebook().then(isLogged => {
+     console.log('is logged facebook', isLogged);
+     });
+     */
+
+    Promise.all([auth.checkAuthGoogle(), auth.checkAuthFacebook()]).then(dataArray => {
+      console.log('promises', dataArray);
+      let hasTrue = dataArray.find(item => item === true);
+      if (!hasTrue) {
+        console.log('has not signed in...');
+        this.setState({gamestate: NOT_LOGGED});
+      }
     });
-    ;
+
   }
 }
 window.fbAsyncInit = function () {

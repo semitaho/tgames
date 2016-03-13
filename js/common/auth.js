@@ -4,9 +4,34 @@ const GOOGLE_SCOPE = 'https://www.googleapis.com/auth/plus.me';
 
 class Auth {
 
-  static loginGoogle() {
+  static checkAuthGoogle() {
+    return new Promise((resolve) => {
+      gapi.load('auth2', () => {
+        let auth2 = gapi.auth2.init({
+          client_id: CLIENT_ID
+        });
+        auth2.then(() => {
+          resolve(auth2.isSignedIn.get());
+        });
+      });
+    });
 
-    return gapi.auth2.signIn();
+  }
+
+  static checkAuthFacebook() {
+    return new Promise(resolve => {
+      FB.getLoginStatus((response) => {
+        if (response.status === 'connected') {
+          resolve(true);
+        } else if (response.status === 'not_authorized') {
+          console.log('not authorized');
+          resolve(false);
+        } else {
+          resolve(false);
+        }
+      });
+    });
+
   }
 
 }

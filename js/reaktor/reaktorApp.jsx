@@ -31,7 +31,6 @@ class ReaktorApp extends React.Component{
  
   }
   componentDidMount(){
-    FB.getLoginStatus(this.checkLoginStatus)
   }
 
   checkLoginStatus(response){
