@@ -21,7 +21,17 @@ class App extends React.Component {
   }
 
   onGoogleSignedIn(response) {
+    auth.storeProvider('google');
     location.reload(true);
+  }
+
+  onFacebookSignedIn(response) {
+
+    if (response.status === 'connected') {
+      auth.storeProvider('facebook');
+
+      location.reload(true);
+    }
   }
 
   render() {
@@ -29,14 +39,10 @@ class App extends React.Component {
 
       <div>
         {this.state.gamestate && this.state.gamestate === NOT_LOGGED ? <LoginModal onGoogleSignedIn={this.onGoogleSignedIn} onClick={() => {
-            FB.login(response => {
-              if (response.status === 'connected') {
-                location.reload(true);
-             }
-            });
+            FB.login(this.onFacebookSignedIn);
           }}/> : '' }
 
-        {this.props.children}
+        {this.state.gamestate && this.state.gamestate !== NOT_LOGGED ? this.props.children : ''}
       </div>
     )
   }
@@ -73,10 +79,15 @@ class App extends React.Component {
 
     Promise.all([auth.checkAuthGoogle(), auth.checkAuthFacebook()]).then(dataArray => {
       console.log('promises', dataArray);
-      let hasTrue = dataArray.find(item => item === true);
+      let hasTrue = dataArray.find(item => item !== false);
       if (!hasTrue) {
         console.log('has not signed in...');
         this.setState({gamestate: NOT_LOGGED});
+      } else {
+        console.log('HAS signed in, provider: ' + localStorage.provider);
+        auth.getUserInfo(localStorage.provider).then(info => {
+
+        });
       }
     });
 
