@@ -7,7 +7,7 @@ const PROVIDER_FACEBOOK = 'facebook';
 class Auth {
 
   static loadAuth2(){
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       gapi.load('auth2', () => {
         let auth2 = gapi.auth2.init({
           client_id: CLIENT_ID
@@ -23,17 +23,22 @@ class Auth {
   }
 
   static checkAuth(provider){
+
     return new Promise((resolve,reject) => {
+      const rejectAuth= () => {
+        throw "not authorized";
+      };
+
       switch(provider){
         case PROVIDER_GOOGLE:
           this.checkAuthGoogle().then(() => {
             resolve({provider: PROVIDER_GOOGLE});
-          });
+          }, rejectAuth);
           break;
         case PROVIDER_FACEBOOK:
           this.checkAuthFacebook().then(() => {
             resolve({provider: PROVIDER_FACEBOOK});
-          });
+          }, rejectAuth);
           break;  
 
         default:
@@ -61,15 +66,16 @@ class Auth {
   }
 
   static checkAuthFacebook() {
-    return new Promise(resolve => {
+    return new Promise((resolve,reject) => {
       FB.getLoginStatus((response) => {
         if (response.status === 'connected') {
           resolve(true);
         } else if (response.status === 'not_authorized') {
           console.log('not authorized');
-          reject(false);
+          throw "not authorized";
         } else {
-          reject(false);
+          console.log('not logged in');
+          throw "not authorized";
         }
       });
     });
@@ -82,7 +88,7 @@ class Auth {
     }
   }
 
-  static readUserInfo(provider) {
+  static readUserInfo(provider, reject) {
     return new Promise((resolve, reject)=> {
       switch (provider.provider) {
         case PROVIDER_GOOGLE:

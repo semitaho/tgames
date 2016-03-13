@@ -38,9 +38,11 @@ class App extends React.Component {
     return (
 
       <div className="container-fluid">
+        {this.state.gamestate && this.state.gamestate !== NOT_LOGGED ?
         <header className="pull-right">
           <img title={this.state.userinfo.name} className="img-thumbnail img-circle" src={this.state.userinfo.imageurl} />
         </header>
+        : ''}
         {this.state.gamestate && this.state.gamestate === NOT_LOGGED ? <LoginModal onGoogleSignedIn={this.onGoogleSignedIn} onClick={() => {
             FB.login(this.onFacebookSignedIn);
           }}/> : '' }
@@ -81,12 +83,14 @@ class App extends React.Component {
      */
 
      auth.checkAuth(localStorage.provider)
-     .then(auth.readUserInfo, (error) => {
-
-      console.log('has error', error)
-      this.setState({gamestate: NOT_LOGGED});
-     }).then(response => {
+     .then(auth.readUserInfo)
+     .then(response => {
+      console.log('EI TÄNNE');
       this.setState({gamestate: STARTED, userinfo: response})
+     }).catch((error) => {
+      console.log('errro', error);
+      this.setState({gamestate: NOT_LOGGED});
+
      });
 
     /*
