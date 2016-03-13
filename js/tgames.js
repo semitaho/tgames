@@ -85,7 +85,7 @@ class App extends React.Component {
         this.setState({gamestate: NOT_LOGGED});
       } else {
         console.log('HAS signed in, provider: ' + localStorage.provider);
-        auth.getUserInfo(localStorage.provider).then(info => {
+        auth.readUserInfo(localStorage.provider).then(info => {
 
         });
       }

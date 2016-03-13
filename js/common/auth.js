@@ -51,6 +51,9 @@ class Auth {
         case PROVIDER_GOOGLE:
           break;
         case PROVIDER_FACEBOOK:
+          FB.api('/me', (response) => {
+            console.log('me', response);
+          });
           break;
         default:
           console.log('cannot find correct provider!');
