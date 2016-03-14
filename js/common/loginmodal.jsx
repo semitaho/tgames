@@ -11,7 +11,7 @@ class LoginModal extends React.Component{
               <div className="modal-dialog">
                 <div className="modal-content">
                    <div className="modal-header">
-                    <h2>Et ole kirjautunut sisään</h2>
+                    <h3>Et ole kirjautunut sisään</h3>
                    </div> 
                    <div className="modal-footer">
                        <div className="btn-group-vertical pull-right col-md-12">
