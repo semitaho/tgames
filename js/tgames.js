@@ -10,7 +10,6 @@ import {NOT_LOGGED, STARTED} from './common/gamestate.js';
 import LoginModal from './common/loginmodal.jsx';
 global.jQuery = require('jquery');
 require('bootstrap');
-const CLIENT_ID = '620105354552-026kvdqfb4gbja57l1d2l71hgdta92gl.apps.googleusercontent.com';
 
 class App extends React.Component {
 
@@ -63,6 +62,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    if (window.location.protocol !== "https:" && window.location.hostname.indexOf('semitaho.github.io') > -1){
+      window.location.href = "https:" + window.location.href.substring(window.location.protocol.length); 
+      return;
+    }
 
     /*
      auth.checkAuthGoogle().then(isLoggedIn => {

@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import auth from './auth.js';
+import {CLIENT_ID} from './auth.js';
 import $ from 'jquery';
 
 
@@ -9,7 +11,7 @@ class LoginModal extends React.Component{
               <div className="modal-dialog">
                 <div className="modal-content">
                    <div className="modal-header">
-                    <h4>Et ole kirjautunut sisään</h4>
+                    <h2>Et ole kirjautunut sisään</h2>
                    </div> 
                    <div className="modal-footer">
                        <div className="btn-group-vertical pull-right col-md-12">
@@ -26,14 +28,18 @@ class LoginModal extends React.Component{
     console.log('facebookmodal - did mount');
     this.toggleModal('show');
     FB.XFBML.parse(document.getElementById('fb-login'));
-    console.log('gapi', gapi.signin2);
-    gapi.signin2.render('google-login', {
+    console.log('gapi client', CLIENT_ID);
+    auth.loadAuth2().then( () => {
+      gapi.signin2.render('google-login', {
         'scope': 'profile email',
         'longtitle': true,
         'width': 'auto',
         'theme': 'dark',
         'onsuccess': this.props.onGoogleSignedIn
       });
+
+    });
+  
 
   }
 

@@ -1,5 +1,5 @@
 const GAPI_KEY = 'AIzaSyBLLdbasHWY-YsG5o5F3cmm9dg8poGYm8M';
-const CLIENT_ID = '620105354552-026kvdqfb4gbja57l1d2l71hgdta92gl.apps.googleusercontent.com';
+export const CLIENT_ID = window.location.hostname.indexOf('semitaho.github.io') > -1 ? '620105354552-h5i2a2nu1g9gc60tohe38lqrst5dnglb.apps.googleusercontent.com' : '620105354552-026kvdqfb4gbja57l1d2l71hgdta92gl.apps.googleusercontent.com';
 const GOOGLE_SCOPE = 'https://www.googleapis.com/auth/plus.me';
 const PROVIDER_GOOGLE = 'google';
 const PROVIDER_FACEBOOK = 'facebook';
@@ -115,6 +115,5 @@ class Auth {
   }
 
 }
-
 export default Auth;
 
