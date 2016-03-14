@@ -11,6 +11,28 @@ class Backend {
 
   }
 
+  static storeScores(name, app, scoreobj){
+
+    let query = {name, app};
+
+    let data = JSON.stringify({
+      name,
+      app,
+      score: scoreobj,
+      datetime: new Date().getTime(),
+    });
+    console.log('data', data);
+
+    return $.ajax({
+      url: BASE_URL + '/collections/scoreboard?apiKey=' + API_KEY + '&q='+JSON.stringify(query)+'&u=true',
+      type: 'PUT',
+      data,
+      contentType: 'application/json'
+    });    
+  }
+
+
+
 }
 
 export default Backend;

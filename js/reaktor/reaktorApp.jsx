@@ -4,10 +4,15 @@ import ReactButton from './button.jsx';
 import GameInfo from './game.jsx';
 import Util from './../common/util.js';
 import Modal from './../common/modal.jsx';
+import Backend from './../common/backend.js';
+
 import LoginModal from './../common/loginmodal.jsx';
 import {PLAYING,STARTED, ENDED,NOT_LOGGED} from './../common/gamestate';
 
 import StartButton from './../common/startButton.jsx';
+
+const COUNTER_MS = 800;
+const DECREMENT_FACTOR = 5;
 class ReaktorApp extends React.Component{
 
   constructor(){
@@ -15,7 +20,6 @@ class ReaktorApp extends React.Component{
     this.colorArray  = [{type:'red'}, {type:'yellow'}, {type:'blue'}, {type:'green'}];
     this.state = {modalshow:false, timer: {elapsed: 0},  gamestate: STARTED};
     this.startGame = this.startGame.bind(this);
-    this.checkLoginStatus = this.checkLoginStatus.bind(this);
   }
 
   startTimer(){
@@ -33,25 +37,7 @@ class ReaktorApp extends React.Component{
   componentDidMount(){
   }
 
-  checkLoginStatus(response){
-    if (response.status === 'connected') {
-       FB.api('/me', response => {
-       console.log('Good to see you, ' + response.name + '.');
-       this.setState({response,  gamestate: STARTED})
-     });
-      var uid = response.authResponse.userID;
-      var accessToken = response.authResponse.accessToken;
-    } else if (response.status === 'not_authorized') {
-      console.log('not not_authorized');
-      this.setState({gamestate: NOT_LOGGED});
-      // the user is logged in to Facebook, 
-      // but has not authenticated your app
-    } else {
-      console.log('not in facebook');
-      this.setState({gamestate: NOT_LOGGED});
-    }
-  }
-
+ 
   checkGameOver(offered){
     let clickedqueue = this.state.clickedqueue;
     let resultsqueue = this.state.resultsqueue;
@@ -67,8 +53,8 @@ class ReaktorApp extends React.Component{
 
   startGame(){
    this.startTimer(); 
-   this.setState({gamestate: PLAYING,game: {points: 0}, resultsqueue: [], rand: -1,clickedqueue: [], counter: 800}); 
-   let counter = 800;
+   this.setState({gamestate: PLAYING,game: {points: 0}, resultsqueue: [], rand: -1,clickedqueue: [], counter: COUNTER_MS}); 
+   let counter = COUNTER_MS;
     const myFunction = () => {
       clearInterval(interval);
       var currentRand = -1;
@@ -136,7 +122,7 @@ class ReaktorApp extends React.Component{
         let newGame = Object.assign({}, this.state.game, {
           points: this.state.game.points+1
         })
-        this.setState({game: newGame, counter: this.state.counter-10});
+        this.setState({game: newGame, counter: this.state.counter-DECREMENT_FACTOR});
       }
     };
     return(
@@ -158,11 +144,13 @@ class ReaktorApp extends React.Component{
         let currentScore = this.state.game.points;
         if (localStorage &&  (!localStorage.topscore ||  currentScore > Number(localStorage.topscore))){
           console.log('keijo kurttila');
-          localStorage.setItem('topscore',currentScore);
-
+          let score = {points: currentScore};
+          Backend.storeScores(this.props.userinfo.name,'Reaktor', score).then( () => {
+            localStorage.setItem('topscore',currentScore);
+            this.setState({modalshow:false});
+          } );
         }
       }
-      this.setState({modalshow:false});
     };
 
 

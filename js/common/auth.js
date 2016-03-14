@@ -26,7 +26,7 @@ class Auth {
 
     return new Promise((resolve,reject) => {
       const rejectAuth= () => {
-        throw "not authorized";
+        reject(Error("not authorized"));
       };
 
       switch(provider){
@@ -42,7 +42,7 @@ class Auth {
           break;  
 
         default:
-         reject('no provider provided');
+         reject(Error('no provider provided'));
       }
       if (!provider){
         reject('no provider provided');
@@ -71,11 +71,11 @@ class Auth {
         if (response.status === 'connected') {
           resolve(true);
         } else if (response.status === 'not_authorized') {
-          console.log('not authorized');
-          throw "not authorized";
+          const NOT_AUTHORIZED = 'not authorized';
+          console.log(NOT_AUTHORIZED);
+          reject(Error(NOT_AUTHORIZED));
         } else {
-          console.log('not logged in');
-          throw "not authorized";
+          reject(Error('not logged in'));
         }
       });
     });

@@ -85,7 +85,7 @@ class App extends React.Component {
      auth.checkAuth(localStorage.provider)
      .then(auth.readUserInfo)
      .then(response => {
-      console.log('EI TÄNNE');
+      console.log('user info fetched...');
       this.setState({gamestate: STARTED, userinfo: response})
      }).catch((error) => {
       console.log('errro', error);
