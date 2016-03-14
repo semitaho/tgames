@@ -3,19 +3,27 @@ export const CLIENT_ID = window.location.hostname.indexOf('semitaho.github.io') 
 const GOOGLE_SCOPE = 'https://www.googleapis.com/auth/plus.me';
 const PROVIDER_GOOGLE = 'google';
 const PROVIDER_FACEBOOK = 'facebook';
-
+let initialized =false;
 class Auth {
 
   static loadAuth2(){
     return new Promise((resolve, reject) => {
       gapi.load('auth2', () => {
+        if (initialized){
+          resolve(true);
+        }
         let auth2 = gapi.auth2.init({
           client_id: CLIENT_ID
         });
+        console.log('authload2', auth2);
+        
         auth2.then(() => {
+          console.log('jeee');
+          initialized = true;
           resolve(true);
         }, (error) => {
           console.log('error',error);
+          reject(Error(error));
         });
       
       });

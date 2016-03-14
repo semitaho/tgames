@@ -30,6 +30,7 @@ class LoginModal extends React.Component{
     FB.XFBML.parse(document.getElementById('fb-login'));
     console.log('gapi client', CLIENT_ID);
     auth.loadAuth2().then( () => {
+      console.log('kollo');
       gapi.signin2.render('google-login', {
         'scope': 'profile email',
         'longtitle': true,
