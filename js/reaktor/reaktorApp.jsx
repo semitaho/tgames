@@ -18,7 +18,7 @@ class ReaktorApp extends React.Component{
   constructor(){
     super();
     this.colorArray  = [{type:'red'}, {type:'yellow'}, {type:'blue'}, {type:'green'}];
-    this.state = {modalshow:false, timer: {elapsed: 0},  gamestate: STARTED};
+    this.state = {modalshow:false, timer: {elapsed: 0}, scores: [],  gamestate: STARTED};
     this.startGame = this.startGame.bind(this);
   }
 
@@ -35,6 +35,7 @@ class ReaktorApp extends React.Component{
  
   }
   componentDidMount(){
+   
   }
 
  
@@ -143,7 +144,6 @@ class ReaktorApp extends React.Component{
       if (localStorage){
         let currentScore = this.state.game.points;
         if (localStorage &&  (!localStorage.topscore ||  currentScore > Number(localStorage.topscore))){
-          console.log('keijo kurttila');
           let score = {points: currentScore};
           Backend.storeScores(this.props.userinfo.name,'Reaktor', score).then( () => {
             localStorage.setItem('topscore',currentScore);

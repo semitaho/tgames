@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import { Router, Route, IndexRoute, Link, hashHistory } from 'react-router'
 import Home from './home/home.jsx';
 import Reaktor from './reaktor/reaktorApp.jsx';
+import Backend from './common/backend.js';
 import auth from './common/auth.js';
 import $ from 'jquery';
 const GAPI_KEY = 'AIzaSyBLLdbasHWY-YsG5o5F3cmm9dg8poGYm8M';
@@ -16,7 +17,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.handleAuthResult = this.handleAuthResult.bind(this);
-    this.state = {gamestate: null, userinfo: {}};
+    this.state = {gamestate: null, userinfo: {}, scores: []};
   }
 
   onGoogleSignedIn(response) {
@@ -38,9 +39,21 @@ class App extends React.Component {
 
       <div className="container-fluid">
         {this.state.gamestate && this.state.gamestate !== NOT_LOGGED ?
-        <header className="pull-right">
-          <img title={this.state.userinfo.name} className="img-thumbnail img-circle" src={this.state.userinfo.imageurl} />
-        </header>
+        <header>
+          <div className="row">
+              <div className="col-md-9 col-xs-10 col-sm-10">
+                <ol className="list-inline">
+                  {this.state.scores.map((score,index) => {
+                    return <li><b>{index+1}. {score.name} {score.score.points}p</b></li>
+                  })}
+            
+                </ol>
+                </div>
+                <div className="col-md-3 col-xs-2 col-sm-2 text-right">
+                  <img title={this.state.userinfo.name} className="img-thumbnail  text-right img-login img-circle" src={this.state.userinfo.imageurl} />
+                </div>
+            </div>
+          </header>
         : ''}
         {this.state.gamestate && this.state.gamestate === NOT_LOGGED ? <LoginModal onGoogleSignedIn={this.onGoogleSignedIn} onClick={() => {
             FB.login(this.onFacebookSignedIn);
@@ -61,12 +74,18 @@ class App extends React.Component {
 
   }
 
+  refreshPoints(){
+    Backend.readScores('Reaktor').then(data => {
+      this.setState({scores: data});
+    });
+  }
+
   componentDidMount() {
     if (window.location.protocol !== "https:" && window.location.hostname.indexOf('semitaho.github.io') > -1){
       window.location.href = "https:" + window.location.href.substring(window.location.protocol.length); 
       return;
     }
-
+   
     /*
      auth.checkAuthGoogle().then(isLoggedIn => {
      console.log('heihei');
@@ -89,28 +108,17 @@ class App extends React.Component {
      .then(auth.readUserInfo)
      .then(response => {
       console.log('user info fetched...');
-      this.setState({gamestate: STARTED, userinfo: response})
-     }).catch((error) => {
+      this.setState({gamestate: STARTED, userinfo: response});
+      this.refreshPoints();
+      
+     // console.log('data',data);
+    //  this.setState({scores:data});
+
+    }).catch((error) => {
       console.log('errro', error);
       this.setState({gamestate: NOT_LOGGED});
 
      });
-
-    /*
-    Promise.all([auth.checkAuthGoogle(), auth.checkAuthFacebook()]).then(dataArray => {
-      console.log('promises', dataArray);
-      let hasTrue = dataArray.find(item => item !== false);
-      if (!hasTrue) {
-        console.log('has not signed in...');
-      } else {
-        console.log('HAS signed in, provider: ' + localStorage.provider);
-        auth.readUserInfo(localStorage.provider).then(info => {
-
-        });
-      }
-    });
-*/
-
   }
 }
 window.fbAsyncInit = function () {
