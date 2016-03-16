@@ -34,8 +34,9 @@ class ReaktorApp extends React.Component{
     },100) 
  
   }
-  componentDidMount(){
-   
+  componentWillMount(){
+    console.log('- refresh points');
+    this.refreshPoints();
   }
 
  
@@ -50,6 +51,12 @@ class ReaktorApp extends React.Component{
       return true;
     }
     return false;
+  }
+
+  refreshPoints(){
+    Backend.readScores('Reaktor').then(data => {
+      this.props.pointsLoaded(data);
+    });
   }
 
   startGame(){

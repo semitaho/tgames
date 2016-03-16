@@ -18,6 +18,7 @@ class App extends React.Component {
     super();
     this.handleAuthResult = this.handleAuthResult.bind(this);
     this.state = {gamestate: null, userinfo: {}, scores: []};
+    this.pointsLoaded = this.pointsLoaded.bind(this);
   }
 
   onGoogleSignedIn(response) {
@@ -60,9 +61,14 @@ class App extends React.Component {
           }}/> : '' }
 
         {this.state.gamestate && this.state.gamestate !== NOT_LOGGED ? 
-          React.cloneElement(this.props.children, {userinfo: this.state.userinfo}) : ''}
+          React.cloneElement(this.props.children, {userinfo: this.state.userinfo, pointsLoaded: this.pointsLoaded}) : ''}
       </div>
     )
+  }
+
+  pointsLoaded(scores){
+    this.setState({scores})
+
   }
 
   handleAuthResult(response) {
@@ -74,11 +80,6 @@ class App extends React.Component {
 
   }
 
-  refreshPoints(){
-    Backend.readScores('Reaktor').then(data => {
-      this.setState({scores: data});
-    });
-  }
 
   componentDidMount() {
     if (window.location.protocol !== "https:" && window.location.hostname.indexOf('semitaho.github.io') > -1){
@@ -109,7 +110,6 @@ class App extends React.Component {
      .then(response => {
       console.log('user info fetched...');
       this.setState({gamestate: STARTED, userinfo: response});
-      this.refreshPoints();
       
      // console.log('data',data);
     //  this.setState({scores:data});
