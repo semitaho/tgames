@@ -37,7 +37,7 @@ class App extends React.Component {
   render() {
     return (
 
-      <div className="container-fluid">
+      <div>
         {this.state.gamestate && this.state.gamestate !== NOT_LOGGED ?
         <header>
           <div className="row">
