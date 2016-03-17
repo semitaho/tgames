@@ -1,3 +1,12 @@
 # tgames  
 
-- Install with _gulp dist_.
+Games with javascript.
+
+## Reaktor
+  Push buttons as quickly as you can!
+## Sudoku
+  TBA
+  
+  
+  
+  
