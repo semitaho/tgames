@@ -30,7 +30,7 @@ class ReactButton extends React.Component{
       clazzName = 'react-button '+this.props.type+' active';
     }
 
-    return <div className="col-md-3 col-sm-3 col-xs-6"> 
+    return <div className="col-md-3 col-sm-3 col-xs-3"> 
             <div onMouseDown={this.props.onPress ? pressed: ''}  onTouchStart={this.props.onPress ? pressed: ''} onTouchEnd={releasePressed} onMouseUp={releasePressed} className={clazzName}>
             </div>
            </div>
