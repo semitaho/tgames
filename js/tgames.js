@@ -3,6 +3,8 @@ import { render } from 'react-dom';
 import { Router, Route, IndexRoute, Link, hashHistory } from 'react-router'
 import Home from './home/home.jsx';
 import Reaktor from './reaktor/reaktorApp.jsx';
+import Sudoku from './sudoku/sudokuApp.jsx';
+
 import Backend from './common/backend.js';
 import auth from './common/auth.js';
 import $ from 'jquery';
@@ -142,6 +144,8 @@ window.fbAsyncInit = function () {
       <Route path="/" component={App}>
         <IndexRoute component={Home}/>
         <Route path="reaktor" component={Reaktor}/>
+        <Route path="sudoku" component={Sudoku}/>
+
       </Route>
     </Router>
   ), content);

@@ -5,7 +5,6 @@ import GameInfo from './game.jsx';
 import Util from './../common/util.js';
 import Modal from './../common/modal.jsx';
 import Backend from './../common/backend.js';
-
 import LoginModal from './../common/loginmodal.jsx';
 import {PLAYING,STARTED, ENDED,NOT_LOGGED} from './../common/gamestate';
 
