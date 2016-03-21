@@ -1,6 +1,6 @@
 const SUDOKU_NUMS = [1,2,3,4,5,6,7,8,9];
 const CORRECT_INDICES = [0,3,6, 27, 30, 33, 54, 57, 60];
-
+const NORMAL_LEVEL_REMOVE = 40;
 class SudokuHelper {
   
   static fillBoard(currentBoard, index){
@@ -121,7 +121,7 @@ class SudokuHelper {
   }
 
   static createNormalBoard(board){
-    const REMOVAL  = 25;
+    const REMOVAL  = NORMAL_LEVEL_REMOVE;
     let removals = [];
     let puzzleBoard = board.slice();
     for (let i = 1; i <= REMOVAL; i++){

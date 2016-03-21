@@ -34,19 +34,10 @@ class ReaktorApp extends React.Component{
  
   }
   componentWillMount(){
-    console.log('- refresh points');
     this.refreshPoints();
   }
 
   componentDidMount(){
-    Backend.readProfileScores('Reaktor', this.props.userinfo.name).then(results => {
-
-      if (results && results.length > 0){
-        console.log('heh', results[0]);
-        let topscores = {_id: results[0]._id, datetime: results[0].datetime, };
-      }
-
-    });
   }
 
  
@@ -66,6 +57,16 @@ class ReaktorApp extends React.Component{
   refreshPoints(){
     Backend.readScores('Reaktor').then(data => {
       this.props.pointsLoaded(data);
+    });
+    Backend.readProfileScores('Reaktor', this.props.userinfo.name).then(results => {
+      if (results && results.length > 0){
+        let topscores = {_id: results[0]._id, name: results[0].name,  datetime: results[0].datetime, score: results[0].score};
+        this.setState({topscores});
+      } else {
+        let topscores = {name: this.props.userinfo.name, score: {}};
+        this.setState({topscores});
+      }
+
     });
   }
 
@@ -93,15 +94,19 @@ class ReaktorApp extends React.Component{
   endGame(){
     clearInterval(this.interval);
 
-    let score = {points: currentScore};
-    Backend.storeScores(this.props.userinfo.name,'Reaktor', score).then( () => {
-      localStorage.setItem('topscore',currentScore);
-    } );
+
+    let score = {points: this.state.game.points, elapsed: this.state.timer.elapsed};
+    console.log('score', score);
+    if (score.points >= this.state.topscores.score.points || !this.state.topscores.score.points){
+      console.log('aijaa');
+      Backend.storeScores(this.state.topscores._id, this.props.userinfo.name,'Reaktor', score).then( () => {
+        this.refreshPoints();
+      } );
+    }
     this.setState({gamestate: 'ended', modalshow: true, rand: -1});
   }
 
   render(){
-    console.log('state', this.props);
     switch(this.state.gamestate){
       case STARTED:
         return this.renderStart();
@@ -161,23 +166,13 @@ class ReaktorApp extends React.Component{
       </div> ) 
   }
   renderEnded(){
-    const onSave = () => {
-      if (localStorage){
-        let currentScore = this.state.game.points;
-        if (localStorage &&  (!localStorage.topscore ||  currentScore > Number(localStorage.topscore))){
-
-        }
-      }
-    };
-
-
     return(
       <div>
         {this.state.modalshow === true ? 
-        <Modal title="Reaktor" onSave={onSave}>
+        <Modal title="Reaktor">
           
           <p>{this.props.userinfo.name}, you scored: <strong>{this.state.game.points}</strong></p>
-           {this.state.topscore.score.points ?  <small>Your current top score: <strong>{this.state.topscore.score.points}</strong></small>: ''}
+           <small>Your current top score: <strong>{this.state.topscores.score.points}</strong>, created: <strong>{Util.formatDate(this.state.topscores.datetime)}</strong> </small>
         </Modal> : ''}
 
       <div className="panel panel-default reaktor-panel">

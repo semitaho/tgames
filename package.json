@@ -9,11 +9,12 @@
     "build:js": "./node_modules/.bin/webpack -p",
     "copy": "cp manifest.json dist",
     "copy:bootstrap": "cp -R ./node_modules/bootstrap dist",
-    "watch": "npm run copy:bootstrap & npm run watch:css & npm run watch:jade & npm run watch:js",
+    "watch": "npm run copy:bootstrap & npm run watch:css & npm run watch:jade & npm run watch:js & npm run webpack-dev",
     "watch:js": "./node_modules/.bin/webpack -w -p ",
     "watch:jade": "./node_modules/.bin/jade -w -P views/partials/*.jade --out dist",
     "watch:css": "./node_modules/.bin/stylus -w  assets/styles/main.styl -o dist/main.css",
     "test": "test",
+    "webpack-dev": "./node_modules/.bin/webpack-dev-server --inline --content-base dist/",
     "dist": "npm run build:jade && npm run copy && npm run build:css &&  npm run build:js"
   },
   "repository": {
@@ -43,6 +44,7 @@
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-react": "^6.5.0",
     "stylus": "^0.53.0",
-    "webpack": "^1.12.13"
+    "webpack": "^1.12.13",
+    "webpack-dev-server": "^1.14.1"
   }
 }

@@ -36,11 +36,12 @@ class Backend {
 
 
 
-  static storeScores(name, app, scoreobj){
+  static storeScores(_id, name, app, scoreobj){
 
     let query = {name, app};
 
     let data = JSON.stringify({
+      _id,
       name,
       app,
       score: scoreobj,
@@ -49,9 +50,9 @@ class Backend {
     console.log('data', data);
 
     return $.ajax({
-      url: BASE_URL + '/collections/scoreboard?apiKey=' + API_KEY + '&q='+JSON.stringify(query)+'&u=true',
-      type: 'PUT',
+      url: BASE_URL + '/collections/scoreboard?apiKey=' + API_KEY, 
       data,
+      type: 'POST',
       contentType: 'application/json'
     });    
   }

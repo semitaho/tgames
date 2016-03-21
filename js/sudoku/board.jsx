@@ -33,14 +33,14 @@ class Board extends React.Component{
   }
 
   render(){
-    return <div className="board">{
+    return <div className="board container">{
       this.props.puzzle.map((item,index) => {
         let clearfix = '';
         let boxstyle = this.getBoxStyle(index);
         if ( (index+1) % 9 === 0){
           clearfix = <div className="clearfix" />
         }
-        let style = 'col-md-1 '+boxstyle;
+        let style = 'col-xs-1 col-sm-1 col-md-1 '+boxstyle;
         return <div><div className={style}><Cell readOnly={item.readOnly} defaultValue={item.number} onValueChange={(value) => this.onValueChange(index,value) }  /></div>{clearfix}</div>
 
 
