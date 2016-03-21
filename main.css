@@ -105,11 +105,38 @@ h2 {
   background-color: #fff;
 }
 .react-button.yellow {
-  background-color: #ff0;
+  background-color: #07ff00;
 }
 .react-button.yellow.active {
   background-color: #fff;
 }
 .btn-group-vertical > * {
   margin-bottom: 10px;
+}
+.cell {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: xx-large;
+}
+.edit {
+  color: #00f;
+}
+.box-cell {
+  width: 11.1% !important;
+}
+.box-right {
+  border-right: 2px solid #000;
+}
+.box-left {
+  border-left: 2px solid #000;
+}
+.box-top {
+  border-top: 2px solid #000;
+}
+.box-bottom {
+  border-bottom: 2px solid #000;
+}
+.col-md-1 {
+  padding-left: 0;
+  padding-right: 0;
 }
