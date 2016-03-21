@@ -38,6 +38,17 @@ class ReaktorApp extends React.Component{
     this.refreshPoints();
   }
 
+  componentDidMount(){
+    Backend.readProfileScores('Reaktor', this.props.userinfo.name).then(results => {
+
+      if (results && results.length > 0){
+        console.log('heh', results[0]);
+        let topscores = {_id: results[0]._id, datetime: results[0].datetime, };
+      }
+
+    });
+  }
+
  
   checkGameOver(offered){
     let clickedqueue = this.state.clickedqueue;
@@ -71,8 +82,7 @@ class ReaktorApp extends React.Component{
       } while(currentRand === this.state.resultsqueue[this.state.resultsqueue.length-1]);
       let resultsqueue = this.state.resultsqueue;
       resultsqueue.push(currentRand); 
-      this.setState({rand: currentRand, resultsqueue})
-      counter = counter;
+      this.setState({rand: currentRand, resultsqueue});
       if (this.state.gamestate === PLAYING){
         interval = setInterval(myFunction, this.state.counter);
       }
@@ -82,6 +92,11 @@ class ReaktorApp extends React.Component{
 
   endGame(){
     clearInterval(this.interval);
+
+    let score = {points: currentScore};
+    Backend.storeScores(this.props.userinfo.name,'Reaktor', score).then( () => {
+      localStorage.setItem('topscore',currentScore);
+    } );
     this.setState({gamestate: 'ended', modalshow: true, rand: -1});
   }
 
@@ -150,11 +165,7 @@ class ReaktorApp extends React.Component{
       if (localStorage){
         let currentScore = this.state.game.points;
         if (localStorage &&  (!localStorage.topscore ||  currentScore > Number(localStorage.topscore))){
-          let score = {points: currentScore};
-          Backend.storeScores(this.props.userinfo.name,'Reaktor', score).then( () => {
-            localStorage.setItem('topscore',currentScore);
-            this.setState({modalshow:false});
-          } );
+
         }
       }
     };
@@ -166,7 +177,7 @@ class ReaktorApp extends React.Component{
         <Modal title="Reaktor" onSave={onSave}>
           
           <p>{this.props.userinfo.name}, you scored: <strong>{this.state.game.points}</strong></p>
-           {localStorage.topscore ?  <small>Your current top score: <strong>{localStorage.topscore}</strong></small>: ''}
+           {this.state.topscore.score.points ?  <small>Your current top score: <strong>{this.state.topscore.score.points}</strong></small>: ''}
         </Modal> : ''}
 
       <div className="panel panel-default reaktor-panel">

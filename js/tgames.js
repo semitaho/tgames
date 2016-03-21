@@ -88,24 +88,7 @@ class App extends React.Component {
       window.location.href = "https:" + window.location.href.substring(window.location.protocol.length); 
       return;
     }
-   
-    /*
-     auth.checkAuthGoogle().then(isLoggedIn => {
-     console.log('heihei');
-     if (isLoggedIn === false) {
-     console.log('et oo sisäs');
-     this.setState({gamestate: NOT_LOGGED});
-     return;
-     } else {
-     console.log('jepjep');
-     }
-     });
-
-
-     auth.checkAuthFacebook().then(isLogged => {
-     console.log('is logged facebook', isLogged);
-     });
-     */
+    
 
      auth.checkAuth(localStorage.provider)
      .then(auth.readUserInfo)
