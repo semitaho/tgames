@@ -33,7 +33,7 @@ class Board extends React.Component{
   }
 
   render(){
-    return <div className="board container">{
+    return <div className="board">{
       this.props.puzzle.map((item,index) => {
         let clearfix = '';
         let boxstyle = this.getBoxStyle(index);

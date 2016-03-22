@@ -14,6 +14,10 @@ class Cell extends React.Component{
     let num = val.substr(val.length-1, val.length);
     if (1 <= num && num <= 9){
       this.props.onValueChange(num);
+      e.target.blur();
+    }
+    else if (!val || val.length === 0){
+      this.props.onValueChange('');
     }
   }
   

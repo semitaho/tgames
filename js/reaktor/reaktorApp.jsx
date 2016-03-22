@@ -25,10 +25,8 @@ class ReaktorApp extends React.Component{
     let start = new Date().getTime();
     this.interval = setInterval(() => {
       let current = new Date().getTime();
-      let newTimer = Object.assign({}, this.state.timer, {
-        elapsed: Util.formatTime(current-start)
-      });
-      this.setState({timer: newTimer});
+      this.state.timer.elapsed = Util.formatTime(current-start);
+      this.setState({timer: this.state.timer});
 
     },100) 
  
@@ -146,10 +144,8 @@ class ReaktorApp extends React.Component{
         this.endGame();
       } else {
         clickedqueue.push(clicked);
-        let newGame = Object.assign({}, this.state.game, {
-          points: this.state.game.points+1
-        })
-        this.setState({game: newGame, counter: this.state.counter-DECREMENT_FACTOR});
+        this.state.game.points = this.state.game.points+1;
+        this.setState({game: this.state.game, counter: this.state.counter-DECREMENT_FACTOR});
       }
     };
     return(

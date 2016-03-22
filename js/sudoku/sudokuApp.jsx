@@ -59,20 +59,16 @@ class Sudoku extends React.Component{
       });
       this.setState({puzzle: startPuzzle});
     };
-    return (<div>
+    return (<div className="container-fluid">
               <div className="row">
-                <div className="col-md-8 col-md-offset-2">
-                  <div className="row">
-                    <div className="col-md-8 col-md-offset-2">
+                     <div className="col-md-8 col-md-offset-2">
                       <Board 
                           level={this.state.level} 
                           onValueChange={this.onValueChange} 
                           puzzle={this.state.puzzle} />
                     </div>
-                  </div>
-                </div>
               </div>
-              <div className="row container">
+              <div className="row">
                <div className="text-info col-md-12 text-center">
                 <Timer elapsed={this.state.timer.elapsed} />
                 <div className="row">
@@ -112,10 +108,8 @@ class Sudoku extends React.Component{
     let start = new Date().getTime();
     this.interval = setInterval(() => {
       let current = new Date().getTime();
-      let newTimer = Object.assign({}, this.state.timer, {
-        elapsed: Util.formatTime(current-start)
-      });
-      this.setState({timer: newTimer});
+      this.state.timer.elapsed =Util.formatTime(current-start);
+      this.setState({timer: this.state.timer});
 
     },100) 
  

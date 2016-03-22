@@ -13,18 +13,19 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="container-fluid">
         <h1>Choose the game</h1>
 
         <div className="row">
+          <div className="col-md-12 col-sm-12 col-xs-12">
           {this.state.games.map(game => {
-            let divStyle = {backgroundImage: 'url('+game.background+')'};
             let clazz ='btn btn-lg btn-block '+game.class;
             return (
-              <div className="col-md-12 gamebox">
-                <Link className={clazz} to={game.link}><h2>{game.name}</h2></Link>
-              </div>)
+                <Link className={clazz} to={game.link}><span>{game.name}</span></Link>
+
+              )
           })}
+          </div>
         </div>
 
       </div>
