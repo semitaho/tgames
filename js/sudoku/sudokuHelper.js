@@ -1,6 +1,6 @@
 const SUDOKU_NUMS = [1,2,3,4,5,6,7,8,9];
 const CORRECT_INDICES = [0,3,6, 27, 30, 33, 54, 57, 60];
-const NORMAL_LEVEL_REMOVE = 40;
+const NORMAL_LEVEL_START = 5;
 class SudokuHelper {
   
   static fillBoard(currentBoard, index){
@@ -110,18 +110,14 @@ class SudokuHelper {
     } 
   }
   static createPuzzle(level, validBoard){
-    switch (level){
-      case 1:
-        return this.createNormalBoard(validBoard);
-      default:
-        return this.createNormaloard(validBoard);
+    let removal = NORMAL_LEVEL_START+level;
 
-    }
-    return validBoard;
+    return this.createBoard(validBoard, removal);
+
   }
 
-  static createNormalBoard(board){
-    const REMOVAL  = NORMAL_LEVEL_REMOVE;
+  static createBoard(board, removeCount){
+    const REMOVAL  = removeCount;
     let removals = [];
     let puzzleBoard = board.slice();
     for (let i = 1; i <= REMOVAL; i++){

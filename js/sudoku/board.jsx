@@ -41,7 +41,8 @@ class Board extends React.Component{
           clearfix = <div className="clearfix" />
         }
         let style = 'col-xs-1 col-sm-1 col-md-1 '+boxstyle;
-        return <div><div className={style}><Cell readOnly={item.readOnly} defaultValue={item.number} onValueChange={(value) => this.onValueChange(index,value) }  /></div>{clearfix}</div>
+        let cellIndex = 'cell_'+index;
+        return <div><div className={style}><Cell key={cellIndex} readOnly={item.readOnly} defaultValue={item.number} onValueChange={(value) => this.onValueChange(index,value) }  /></div>{clearfix}</div>
 
 
       } ) 

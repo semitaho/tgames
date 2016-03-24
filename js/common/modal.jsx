@@ -18,7 +18,7 @@ class Modal extends React.Component{
                   </div>
                  <div className="modal-footer">
                     <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                    {this.props.onSave ? <button type="button" className="btn btn-primary" onClick={this.props.onSave}>Save</button> : ''}
+                    {this.props.onSave ? <button type="button" className="btn btn-primary" onClick={this.props.onSave}>Continue</button> : ''}
                 </div>
                </div>
                </div>

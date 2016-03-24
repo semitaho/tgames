@@ -21,7 +21,7 @@ class Home extends React.Component {
           {this.state.games.map(game => {
             let clazz ='btn btn-lg btn-block '+game.class;
             return (
-                <Link className={clazz} to={game.link}><span>{game.name}</span></Link>
+                <Link className={clazz} to={game.link}><h3>{game.name}</h3></Link>
 
               )
           })}
