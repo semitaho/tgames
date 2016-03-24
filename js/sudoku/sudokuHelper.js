@@ -110,9 +110,14 @@ class SudokuHelper {
     } 
   }
   static createPuzzle(level, validBoard){
-    let removal = NORMAL_LEVEL_START+level;
-
-    return this.createBoard(validBoard, removal);
+    if (level <= 10){
+      let removal = NORMAL_LEVEL_START+ (level*2);
+      return this.createBoard(validBoard, removal);
+    }
+    let beforeLevel10Removal = (10*2) + NORMAL_LEVEL_START;
+    let erotus = level - 10;
+    let kokonaisRemoval = beforeLevel10Removal+erotus;
+    return this.createBoard(validBoard, kokonaisRemoval);
 
   }
 
