@@ -13,7 +13,7 @@
     "watch:js": "./node_modules/.bin/webpack -w -p ",
     "watch:jade": "./node_modules/.bin/jade -w -P views/partials/*.jade --out dist",
     "watch:css": "./node_modules/.bin/stylus -w  assets/styles/main.styl -o dist/main.css",
-    "test": "test",
+    "test": "node_modules/.bin/mocha --compilers js:babel-register -w test/**/*.js",
     "webpack-dev": "./node_modules/.bin/webpack-dev-server --inline --content-base dist/",
     "dist": "npm run build:jade && npm run copy && npm run build:css &&  npm run build:js"
   },
@@ -43,6 +43,9 @@
     "babel-loader": "^6.2.3",
     "babel-preset-es2015": "^6.5.0",
     "babel-preset-react": "^6.5.0",
+    "babel-register": "^6.7.2",
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
     "stylus": "^0.53.0",
     "webpack": "^1.12.13",
     "webpack-dev-server": "^1.14.1"
