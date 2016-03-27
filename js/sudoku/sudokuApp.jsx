@@ -4,11 +4,11 @@ import {NORMAL} from './../common/difficulty.js';
 import SudokuHelper from './sudokuHelper.js';
 import Modal from './../common/modal.jsx';
 import Backend from './../common/backend.js';
-import Timer from './../common/timer.jsx';
+import App from './../common/app.jsx';
 import Util from './../common/util.js';
 import {PLAYING, ENDED} from './../common/gamestate';
 
-class Sudoku extends React.Component {
+class Sudoku extends App {
 
   constructor() {
     super();
@@ -34,35 +34,23 @@ class Sudoku extends React.Component {
     let currentScore = this.state.userdata.score;
     let newAttempt = this.state.userdata.score.attempt;
     let level = this.state.userdata.score.level;
-    if (currentScore.attempt < 3){
+    if (currentScore.attempt < 3) {
       newAttempt += 1;
-    } else if (currentScore.attempt === 3){
+    } else if (currentScore.attempt === 3) {
       newAttempt = 1;
-      level +=1;
+      level += 1;
     }
     let scoreObj = {level, attempt: newAttempt};
     console.log('scoreobj', scoreObj);
 
 
-    Backend.storeScores(this.state.userdata._id, this.state.userdata.name,'Sudoku', scoreObj).then( () => {
+    Backend.storeScores(this.state.userdata._id, this.state.userdata.name, 'Sudoku', scoreObj).then(() => {
       let userdata = this.state.userdata;
       userdata.score = scoreObj;
       this.setState({gamestate: ENDED, userdata});
-    } );
+    });
   }
-
-  render() {
-    switch (this.state.gamestate) {
-      case PLAYING:
-        return this.renderPlaying();
-      case ENDED:
-        return this.renderEnded();
-      default:
-        return this.renderPlaying();
-    }
-    return this.renderPlaying();
-  }
-
+  
   renderPlaying() {
     const resetBoard = () => {
       let puzzle = this.state.puzzle;
@@ -86,7 +74,9 @@ class Sudoku extends React.Component {
       </div>
       <div className="row">
         <div className="text-info col-md-12 text-center">
-          {this.state.userdata ? <h4>Level: {this.state.userdata.score.level}<br/><small>Puzzle {this.state.userdata.score.attempt}/3</small></h4> : ''}
+          {this.state.userdata ? <h4>Level: {this.state.userdata.score.level}<br/>
+            <small>Puzzle {this.state.userdata.score.attempt}/3</small>
+          </h4> : ''}
           <div className="row">
             <div className="col-md-12 col-sm-12 col-xs-12 center-block">
               <button onClick={resetBoard} type="button" className="btn btn-block btn-danger">Reset board</button>
@@ -105,7 +95,9 @@ class Sudoku extends React.Component {
     return (
       <div className="container">
         <Modal title="Sudoku" onSave={() => this.startNewGame(userdata)}>
-          <p>{this.props.userinfo.name}, congratulations, you solved <strong>level {this.state.userdata.score.attempt  === 1 ? this.state.userdata.score.level - 1 : this.state.userdata.score.level}</strong> sudoku!</p>
+          <p>{this.props.userinfo.name}, congratulations, you solved
+            <strong>level {this.state.userdata.score.attempt === 1 ? this.state.userdata.score.level - 1 : this.state.userdata.score.level}</strong>
+            sudoku!</p>
         </Modal>
       </div>
 
@@ -138,27 +130,31 @@ class Sudoku extends React.Component {
     this.setState({gamestate: PLAYING, solution: validBoard, puzzle: completePuzzle});
   }
 
-  componentWillMount() {
+  refreshPoints() {
     let sortObject = {'score.level': -1, 'score.attempt': -1};
     Backend.readScores('Sudoku', sortObject).then(data => {
       console.log('data', data);
       let scoredata = data.map(item => {
         let score = item.score;
         score.points = item.score.level;
-        
+
         return {name: item.name, score};
       });
       this.props.pointsLoaded(scoredata);
     });
 
+  }
+
+  componentWillMount() {
+    super.componentWillMount();
     Backend.readProfileScores('Sudoku', this.props.userinfo.name).then(data => {
       console.log('has data', data);
       let userData = null;
-      if (data.length === 0){
+      if (data.length === 0) {
         userData = this.createSudokuUserData(this.props.userinfo.name);
       } else {
         let scoreitem = data[0];
-        userData ={_id: scoreitem._id, name: scoreitem.name, app: 'Sudoku', score:scoreitem.score};
+        userData = {_id: scoreitem._id, name: scoreitem.name, app: 'Sudoku', score: scoreitem.score};
         this.setState({userdata: userData});
       }
       this.startNewGame(userData);
@@ -167,9 +163,9 @@ class Sudoku extends React.Component {
 
   }
 
-  createSudokuUserData(username){
+  createSudokuUserData(username) {
     console.log('creating data...', username);
-    let userData ={name: username, app: 'Sudoku', score: {level: 1, attempt: 1}};
+    let userData = {name: username, app: 'Sudoku', score: {level: 1, attempt: 1}};
     this.setState({userdata: userData});
     return userData;
 

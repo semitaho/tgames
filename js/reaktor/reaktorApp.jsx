@@ -5,14 +5,14 @@ import GameInfo from './game.jsx';
 import Util from './../common/util.js';
 import Modal from './../common/modal.jsx';
 import Backend from './../common/backend.js';
-import LoginModal from './../common/loginmodal.jsx';
+import App from './../common/app.jsx';
 import {PLAYING,STARTED, ENDED,NOT_LOGGED} from './../common/gamestate';
 
 import StartButton from './../common/startButton.jsx';
 
 const COUNTER_MS = 800;
 const DECREMENT_FACTOR = 5;
-class ReaktorApp extends React.Component{
+class ReaktorApp extends App{
 
   constructor(){
     super();
@@ -31,13 +31,6 @@ class ReaktorApp extends React.Component{
     },100) 
  
   }
-  componentWillMount(){
-    this.refreshPoints();
-  }
-
-  componentDidMount(){
-  }
-
  
   checkGameOver(offered){
     let clickedqueue = this.state.clickedqueue;
@@ -104,19 +97,7 @@ class ReaktorApp extends React.Component{
     this.setState({gamestate: 'ended', modalshow: true, rand: -1});
   }
 
-  render(){
-    switch(this.state.gamestate){
-      case STARTED:
-        return this.renderStart();
-      case PLAYING:
-        return this.renderPlaying();
-      case ENDED:
-        return this.renderEnded();
-      default:
-        return this.renderEmpty();
-    }
-  }
-
+ 
 
   renderEmpty(){
     return <div />
