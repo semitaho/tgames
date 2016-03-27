@@ -1,6 +1,6 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { Router, Route, IndexRoute, Link, hashHistory } from 'react-router'
+import {render} from 'react-dom';
+import {Router, Route, IndexRoute, Link, hashHistory} from 'react-router'
 import Home from './home/home.jsx';
 import Reaktor from './reaktor/reaktorApp.jsx';
 import Sudoku from './sudoku/sudokuApp.jsx';
@@ -42,33 +42,34 @@ class App extends React.Component {
 
       <div>
         {this.state.gamestate && this.state.gamestate !== NOT_LOGGED ?
-        <header>
-          <div className="row">
+          <header>
+            <div className="row">
               <div className="col-md-9 col-xs-10 col-sm-10">
                 <ol className="list-inline">
-                  {this.state.scores.map((score,index) => {
-                    return <li><b>{index+1}. {score.name} {score.score.points}p</b></li>
+                  {this.state.scores.map((score, index) => {
+                    return <li><b>{index + 1}. {score.name} {score.score.points}p</b></li>
                   })}
-            
+
                 </ol>
-                </div>
-                <div className="col-md-3 col-xs-2 col-sm-2 text-right">
-                  <img title={this.state.userinfo.name} className="img-thumbnail  text-right img-login img-circle" src={this.state.userinfo.imageurl} />
-                </div>
+              </div>
+              <div className="col-md-3 col-xs-2 col-sm-2 text-right">
+                <img title={this.state.userinfo.name} className="img-thumbnail  text-right img-login img-circle"
+                     src={this.state.userinfo.imageurl}/>
+              </div>
             </div>
           </header>
-        : ''}
+          : ''}
         {this.state.gamestate && this.state.gamestate === NOT_LOGGED ? <LoginModal onGoogleSignedIn={this.onGoogleSignedIn} onClick={() => {
             FB.login(this.onFacebookSignedIn);
           }}/> : '' }
 
-        {this.state.gamestate && this.state.gamestate !== NOT_LOGGED ? 
+        {this.state.gamestate && this.state.gamestate !== NOT_LOGGED ?
           React.cloneElement(this.props.children, {userinfo: this.state.userinfo, pointsLoaded: this.pointsLoaded}) : ''}
       </div>
     )
   }
 
-  pointsLoaded(scores){
+  pointsLoaded(scores) {
     this.setState({scores})
 
   }
@@ -84,26 +85,26 @@ class App extends React.Component {
 
 
   componentDidMount() {
-    if (window.location.protocol !== "https:" && window.location.hostname.indexOf('semitaho.github.io') > -1){
-      window.location.href = "https:" + window.location.href.substring(window.location.protocol.length); 
+    if (window.location.protocol !== "https:" && window.location.hostname.indexOf('semitaho.github.io') > -1) {
+      window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
       return;
     }
-    
 
-     auth.checkAuth(localStorage.provider)
-     .then(auth.readUserInfo)
-     .then(response => {
-      console.log('user info fetched...');
-      this.setState({gamestate: STARTED, userinfo: response});
-      
-     // console.log('data',data);
-    //  this.setState({scores:data});
 
-    }).catch((error) => {
+    auth.checkAuth(localStorage.provider)
+      .then(auth.readUserInfo)
+      .then(response => {
+        console.log('user info fetched...');
+        this.setState({gamestate: STARTED, userinfo: response});
+
+        // console.log('data',data);
+        //  this.setState({scores:data});
+
+      }).catch((error) => {
       console.log('errro', error);
       this.setState({gamestate: NOT_LOGGED});
 
-     });
+    });
   }
 }
 window.fbAsyncInit = function () {

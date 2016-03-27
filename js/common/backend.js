@@ -11,9 +11,12 @@ class Backend {
 
   }
 
-  static readScores(app) {
+  static readScores(app, sortObject) {
     let query = {app};
     let sort = {'score.points': -1};
+    if (sortObject !== undefined){
+      sort = sortObject;
+    }
 
     return $.ajax({
       url: BASE_URL + '/collections/scoreboard?apiKey=' + API_KEY + '&q=' + JSON.stringify(query) + '&l=3&s=' + JSON.stringify(sort),

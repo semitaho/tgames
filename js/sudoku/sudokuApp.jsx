@@ -139,6 +139,18 @@ class Sudoku extends React.Component {
   }
 
   componentWillMount() {
+    let sortObject = {'score.level': -1, 'score.attempt': -1};
+    Backend.readScores('Sudoku', sortObject).then(data => {
+      console.log('data', data);
+      let scoredata = data.map(item => {
+        let score = item.score;
+        score.points = item.score.level;
+        
+        return {name: item.name, score};
+      });
+      this.props.pointsLoaded(scoredata);
+    });
+
     Backend.readProfileScores('Sudoku', this.props.userinfo.name).then(data => {
       console.log('has data', data);
       let userData = null;
