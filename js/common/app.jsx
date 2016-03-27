@@ -1,10 +1,10 @@
 import React from 'react';
-import {PLAYING,STARTED, ENDED,NOT_LOGGED} from './gamestate';
+import {PLAYING, STARTED, ENDED, NOT_LOGGED} from './gamestate';
 
 
 class App extends React.Component {
 
-  constructor(){
+  constructor() {
     super();
   }
 
@@ -12,8 +12,8 @@ class App extends React.Component {
     this.refreshPoints();
   }
 
-  render(){
-    switch(this.state.gamestate){
+  render() {
+    switch (this.state.gamestate) {
       case STARTED:
         return this.renderStart();
       case PLAYING:
@@ -23,6 +23,11 @@ class App extends React.Component {
       default:
         return this.renderEmpty();
     }
+  }
+
+
+  renderEmpty() {
+    return <div />
   }
 
 }

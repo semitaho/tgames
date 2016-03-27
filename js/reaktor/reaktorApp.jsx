@@ -96,13 +96,7 @@ class ReaktorApp extends App{
     }
     this.setState({gamestate: 'ended', modalshow: true, rand: -1});
   }
-
- 
-
-  renderEmpty(){
-    return <div />
-  }
-
+  
   renderStart(){
     return (<div className="panel panel-default reaktor-panel">
       <ReactButtonContainer>
@@ -142,6 +136,7 @@ class ReaktorApp extends App{
         </div>
       </div> ) 
   }
+
   renderEnded(){
     return(
       <div>
