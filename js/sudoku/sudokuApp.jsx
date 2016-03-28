@@ -50,7 +50,7 @@ class Sudoku extends App {
       this.setState({gamestate: ENDED, userdata});
     });
   }
-  
+
   renderPlaying() {
     const resetBoard = () => {
       let puzzle = this.state.puzzle;
@@ -95,9 +95,7 @@ class Sudoku extends App {
     return (
       <div className="container">
         <Modal title="Sudoku" onSave={() => this.startNewGame(userdata)}>
-          <p>{this.props.userinfo.name}, congratulations, you solved
-            <strong>level {this.state.userdata.score.attempt === 1 ? this.state.userdata.score.level - 1 : this.state.userdata.score.level}</strong>
-            sudoku!</p>
+          <p>{this.props.userinfo.name}, congratulations, you solved <strong>level {this.state.userdata.score.attempt === 1 ? this.state.userdata.score.level - 1 : this.state.userdata.score.level}</strong> sudoku!</p>
         </Modal>
       </div>
 
