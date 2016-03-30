@@ -62,7 +62,6 @@ class Auth {
   static checkAuthGoogle() {
     return new Promise((resolve, reject) => {
         this.loadAuth2().then(() => {
-          console.log('chekkonen');
           let auth2 = gapi.auth2.getAuthInstance();
           if (auth2.isSignedIn && auth2.isSignedIn.get() === true) {
             resolve(true);

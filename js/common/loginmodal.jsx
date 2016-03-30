@@ -11,12 +11,13 @@ class LoginModal extends React.Component{
               <div className="modal-dialog">
                 <div className="modal-content">
                    <div className="modal-header">
-                    <h3>Et ole kirjautunut sisään</h3>
+                    <h3>You are not logged in</h3>
                    </div> 
                    <div className="modal-footer">
                        <div className="btn-group-vertical pull-right col-md-12">
                         <div className="g-signin2" id="google-login"/>
-                        <button className="btn btn-primary" onClick={this.props.onClick}>Login with Facebook</button>
+                        <button type="button" className="btn btn-primary btn-block" onClick={this.props.onClick}>Login with Facebook</button>
+                        <button type="button" className="btn btn-success btn-block" onClick={this.props.onAnonymous}>Try without signing</button>
                        </div>
                   </div>
                 </div>

@@ -21,6 +21,7 @@ class App extends React.Component {
     this.handleAuthResult = this.handleAuthResult.bind(this);
     this.state = {gamestate: null, userinfo: {}, scores: []};
     this.pointsLoaded = this.pointsLoaded.bind(this);
+    this.onAnynomous = this.onAnynomous.bind(this);
   }
 
   onGoogleSignedIn(response) {
@@ -35,6 +36,11 @@ class App extends React.Component {
 
       location.reload(true);
     }
+  }
+
+  onAnynomous(response){
+    console.log('anonymous');
+    this.setState({gamestate: STARTED, userinfo:{name: 'Anonymous User'}});
   }
 
   render() {
@@ -52,14 +58,16 @@ class App extends React.Component {
 
                 </ol>
               </div>
+
               <div className="col-md-3 col-xs-2 col-sm-2 text-right">
+                {this.state.userinfo.userid ?
                 <img title={this.state.userinfo.name} className="img-thumbnail  text-right img-login img-circle"
-                     src={this.state.userinfo.imageurl}/>
+                     src={this.state.userinfo.imageurl}/> : ''}
               </div>
             </div>
           </header>
           : ''}
-        {this.state.gamestate && this.state.gamestate === NOT_LOGGED ? <LoginModal onGoogleSignedIn={this.onGoogleSignedIn} onClick={() => {
+        {this.state.gamestate && this.state.gamestate === NOT_LOGGED ? <LoginModal onAnonymous={this.onAnynomous} onGoogleSignedIn={this.onGoogleSignedIn} onClick={() => {
             FB.login(this.onFacebookSignedIn);
           }}/> : '' }
 

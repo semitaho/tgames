@@ -8,7 +8,7 @@ class Modal extends React.Component {
 
   render() {
     const backToMainMenu = () => {
-      window.location.assign("/");
+      window.location.assign("");
     };
 
     return (<div id="tmodal" className="modal modal-lg" tabIndex="-1" role="dialog">

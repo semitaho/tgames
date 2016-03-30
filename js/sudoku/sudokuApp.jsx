@@ -41,14 +41,15 @@ class Sudoku extends App {
       level += 1;
     }
     let scoreObj = {level, attempt: newAttempt};
-    console.log('scoreobj', scoreObj);
-
-
-    Backend.storeScores(this.state.userdata._id, this.state.userdata.name, 'Sudoku', scoreObj).then(() => {
-      let userdata = this.state.userdata;
-      userdata.score = scoreObj;
+    let userdata = this.state.userdata;
+    userdata.score = scoreObj;
+    if (this.props.userinfo.userid) {
+      Backend.storeScores(this.state.userdata._id, this.state.userdata.name, 'Sudoku', scoreObj).then(() => {
+        this.setState({gamestate: ENDED, userdata});
+      });
+    } else {
       this.setState({gamestate: ENDED, userdata});
-    });
+    }
   }
 
   renderPlaying() {
@@ -102,19 +103,6 @@ class Sudoku extends App {
     )
   }
 
-  startTimer() {
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
-    let start = new Date().getTime();
-    this.interval = setInterval(() => {
-      let current = new Date().getTime();
-      this.state.timer.elapsed = Util.formatTime(current - start);
-      this.setState({timer: this.state.timer});
-
-    }, 100)
-
-  }
 
   startNewGame(userdata) {
     let board = [];
@@ -124,7 +112,6 @@ class Sudoku extends App {
       let puzzleElement = {readOnly: number !== null, number, solution: validBoard[index]};
       return puzzleElement;
     });
-    this.startTimer();
     this.setState({gamestate: PLAYING, solution: validBoard, puzzle: completePuzzle});
   }
 
