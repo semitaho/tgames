@@ -116,7 +116,14 @@ h2 {
 .cell {
   width: 100%;
   box-sizing: border-box;
+}
+.col-md-1 .cell,
+.col-lg-1 .cell {
   font-size: xx-large;
+}
+.col-sm-1 .cell,
+col-xs-1 .cell {
+  font-size: medium;
 }
 .edit {
   color: #00f;
