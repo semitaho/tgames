@@ -79,7 +79,7 @@ class Sudoku extends App {
             <small>Puzzle {this.state.userdata.score.attempt}/3</small>
           </h4> : ''}
           <div className="row">
-            <div className="col-md-12 col-sm-12 col-xs-12 center-block">
+            <div className="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
               <button onClick={resetBoard} type="button" className="btn btn-block btn-danger">Reset board</button>
 
               <button onClick={() => this.startNewGame(userdata)} type="button" className="btn btn-block btn-success">New game</button>
