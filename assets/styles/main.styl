@@ -106,14 +106,12 @@ header > .row
 .cell
   width 100%
   box-sizing border-box
-
-.col-md-1, .col-lg-1
-  .cell
+  font-size medium
+  @media (min-width: 1200px)
     font-size xx-large
+  @media (min-width: 768px)
+    font-size x-large  
 
-.col-sm-1, col-xs-1
-  .cell
-    font-size medium
 
 .edit
   color blue
