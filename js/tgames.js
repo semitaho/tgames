@@ -11,8 +11,6 @@ import $ from 'jquery';
 const GAPI_KEY = 'AIzaSyBLLdbasHWY-YsG5o5F3cmm9dg8poGYm8M';
 import {NOT_LOGGED, STARTED} from './common/gamestate.js';
 import LoginModal from './common/loginmodal.jsx';
-global.jQuery = require('jquery');
-require('bootstrap');
 
 class App extends React.Component {
 
@@ -44,13 +42,15 @@ class App extends React.Component {
   }
 
   render() {
+    let currentYear = new Date().getFullYear();
+    let copyrightText ='© '+currentYear+' Toni Aho';
     return (
 
       <div>
         {this.state.gamestate && this.state.gamestate !== NOT_LOGGED ?
           <header>
             <div className="row">
-              <div className="col-md-9 col-xs-10 col-sm-10">
+              <div className="col m9 s10">
                 <ol className="list-inline">
                   {this.state.scores.map((score, index) => {
                     return <li><b>{index + 1}. {score.name} {score.score.points}p</b></li>
@@ -73,6 +73,12 @@ class App extends React.Component {
 
         {this.state.gamestate && this.state.gamestate !== NOT_LOGGED ?
           React.cloneElement(this.props.children, {userinfo: this.state.userinfo, pointsLoaded: this.pointsLoaded}) : ''}
+        <footer className="page-footer">
+          <div className="footer-copyright">
+            <div className="container">{copyrightText}
+            </div>
+          </div>
+        </footer>
       </div>
     )
   }

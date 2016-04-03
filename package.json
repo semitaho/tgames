@@ -8,14 +8,14 @@
     "build:jade": "./node_modules/.bin/jade -P views/partials/*.jade --out dist",
     "build:js": "./node_modules/.bin/webpack -p",
     "copy": "cp manifest.json dist",
-    "copy:bootstrap": "cp -R ./node_modules/bootstrap dist",
-    "watch": "npm run copy:bootstrap & npm run watch:css & npm run watch:jade & npm run watch:js & npm run webpack-dev",
+    "copy:resources": "cp -R ./resources/** dist",
+    "watch": "npm run copy:resources & npm run watch:css & npm run watch:jade & npm run watch:js & npm run webpack-dev",
     "watch:js": "./node_modules/.bin/webpack -w -p ",
     "watch:jade": "./node_modules/.bin/jade -w -P views/partials/*.jade --out dist",
     "watch:css": "./node_modules/.bin/stylus -w  assets/styles/main.styl -o dist/main.css",
     "test": "node_modules/.bin/mocha --compilers js:babel-register -w test/**/*.js",
     "webpack-dev": "./node_modules/.bin/webpack-dev-server --inline --content-base dist/",
-    "dist": "npm run build:jade && npm run copy && npm run build:css &&  npm run build:js"
+    "dist": "npm run copy:resources && npm run build:jade && npm run copy && npm run build:css &&  npm run build:js"
   },
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
     "jquery": "^2.2.1",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
+    "react-materialize": "^0.14.3",
     "react-router": "^2.0.0"
   },
   "devDependencies": {
