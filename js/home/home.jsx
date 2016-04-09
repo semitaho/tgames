@@ -21,12 +21,14 @@ class Home extends React.Component {
           {this.state.games.map(game => {
             return (
               <div className="col s6 m6 l6">
+                <Link to={game.link}>
+                  <div className="card">
 
-                <div className="card">
-                  <div className="card-content">
-                    <span className="card-title">{game.name}</span>
+                    <div className="card-content">
+                      <span className="card-title">{game.name}</span>
+                    </div>
                   </div>
-                </div>
+                </Link>
               </div> 
               )
           })}

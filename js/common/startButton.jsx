@@ -2,8 +2,8 @@ import React from 'react';
 
 const startButton = (props) => {
   return (
-      <div className="start text-center">
-        <button className="btn-primary btn-lg btn-block" onClick={props.onStart}>Start game!</button>
+      <div className="start center-align">
+        <button className="btn btn-large" onClick={props.onStart}>Start game!</button>
       </div>)
 };
 

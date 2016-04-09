@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import $ from 'jquery';
 import {browserHistory} from 'react-router';
 
 class Modal extends React.Component {
@@ -11,25 +10,16 @@ class Modal extends React.Component {
       window.location.assign("");
     };
 
-    return (<div id="tmodal" className="modal modal-lg" tabIndex="-1" role="dialog">
-      <div className="modal-dialog">
-        <div className="modal-content">
-          {this.props.title ?
-            <div className="modal-header">
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-              </button>
-              <h4 className="modal-title">{this.props.title}</h4>
-            </div> : ''}
-          <div className="modal-body">
+    return (<div id="tmodal" className="modal" tabIndex="-1">
+          <div className="modal-content">
+            {this.props.title ? <h4 className="modal-title">{this.props.title}</h4> : ''}
             {this.props.children}
           </div>
           <div className="modal-footer">
             <button type="button" onClick={backToMainMenu} className="btn btn-default" data-dismiss="modal">Close</button>
             {this.props.onSave ? <button type="button" className="btn btn-primary" onClick={this.props.onSave}>Continue</button> : ''}
           </div>
-        </div>
-      </div>
-    </div>)
+        </div>)
   }
 
   componentDidMount() {
@@ -41,8 +31,13 @@ class Modal extends React.Component {
   }
 
   toggleModal(value) {
-    let modal = $(ReactDOM.findDOMNode(this));
-    modal.modal(value);
+    let modal = $('#tmodal');
+    if (value === 'show'){
+      modal.openModal();
+    } else if (value === 'hide'){
+      modal.closeModal();
+
+    }
 
   }
 }

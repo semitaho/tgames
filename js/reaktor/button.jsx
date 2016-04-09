@@ -19,7 +19,7 @@ class ReactButton extends React.Component{
       this.setState({pressed: false});
     }
 
-    let clazzName = 'react-button '+this.props.type;
+    let clazzName = 'btn btn-large waves-effect waves-light react-button '+this.props.type;
     if (this.props.blink){
       clazzName = 'react-button '+this.props.type+' blink';
     }
@@ -27,12 +27,12 @@ class ReactButton extends React.Component{
       clazzName = clazzName + ' pressed';
     }
     if (this.props.active){
-      clazzName = 'react-button '+this.props.type+' active';
+      clazzName = 'react-button '+this.props.type+' active lighten-5 z-depth-4';
     }
 
-    return <div className="col-md-3 col-sm-3 col-xs-3"> 
-            <div onMouseDown={this.props.onPress ? pressed: ''}  onTouchStart={this.props.onPress ? pressed: ''} onTouchEnd={releasePressed} onMouseUp={releasePressed} className={clazzName}>
-            </div>
+    return <div className="col m3 s3 l3">
+            <button onMouseDown={this.props.onPress ? pressed: ''}  onTouchStart={this.props.onPress ? pressed: ''} onTouchEnd={releasePressed} onMouseUp={releasePressed} className={clazzName}>
+            </button>
            </div>
   }
 

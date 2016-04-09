@@ -64,7 +64,7 @@ class Sudoku extends App {
       this.setState({puzzle: startPuzzle});
     };
     let userdata = this.state.userdata;
-    return (<div className="container-fluid">
+    return (<div className="container">
       <div className="row">
         <div className="col-md-8 col-md-offset-2">
           <Board
@@ -74,21 +74,16 @@ class Sudoku extends App {
         </div>
       </div>
       <div className="row">
-        <div className="text-info col-md-12 text-center">
+        <div className="text-info col m12 l12 s12 center-align">
           {this.state.userdata ? <h4>Level: {this.state.userdata.score.level}<br/>
             <small>Puzzle {this.state.userdata.score.attempt}/3</small>
           </h4> : ''}
-          <div className="row">
-            <div className="col-md-8 col-md-offset-2 col-sm-12 col-xs-12">
-              <button onClick={resetBoard} type="button" className="btn btn-block btn-danger">Reset board</button>
-
-              <button onClick={() => this.startNewGame(userdata)} type="button" className="btn btn-block btn-success">New game</button>
-            </div>
-          </div>
+          <button onClick={resetBoard} type="button" className="btn btn-large blue">Reset board</button>
+          <button onClick={() => this.startNewGame(userdata)} type="button" className="red btn-large btn-success">New game</button>
         </div>
-
       </div>
-    </div>)
+
+      </div>)
   }
 
   renderEnded() {

@@ -141,7 +141,6 @@ class ReaktorApp extends App {
       <div>
         {this.state.modalshow === true ?
           <Modal title="Reaktor">
-
             <p>{this.props.userinfo.name}, you scored: <strong>{this.state.game.points}</strong></p>
             {this.props.userinfo.userid ?
             <small>Your current top score: <strong>{this.state.topscores.score.points}</strong>, created:

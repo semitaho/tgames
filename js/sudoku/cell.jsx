@@ -24,7 +24,7 @@ class Cell extends React.Component {
 
 
   render() {
-    let clazz = "cell text-center ";
+    let clazz = "cell center-align ";
     if (!this.props.readOnly) {
       clazz += 'edit';
     }
